@@ -1,0 +1,25 @@
+version = 1
+revision = 2
+requires-python = ">=3.11"
+
+[manifest]
+members = [
+    "prompting-workbench",
+    "prompting-workbench-workspace",
+]
+
+[[package]]
+name = "prompting-workbench"
+version = "0.1.0"
+source = { editable = "packages/prompting-workbench" }
+
+[[package]]
+name = "prompting-workbench-workspace"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "prompting-workbench" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "prompting-workbench", editable = "packages/prompting-workbench" }]
