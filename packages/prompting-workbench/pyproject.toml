@@ -1,13 +1,21 @@
 [project]
 name = "prompting-workbench"
 version = "0.1.0"
-description = "Add your description here"
+description = "Prompting Workbench - CLI"
 readme = "README.md"
 authors = [
     { name = "Vinicius Patrinhani", email = "vpatrinhani@gmail.com" }
 ]
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "pydantic>=2.11.7",
+    "pydantic-settings>=2.10.1",
+    "python-dotenv>=1.1.1",
+    "typer>=0.16.0",
+]
+
+[project.scripts]
+prompting_workbench = "prompting_workbench.cli:main"
 
 [build-system]
 requires = ["hatchling"]
