@@ -1,0 +1,7 @@
+{
+    "chat_provider": "google-gemini",
+    "system": "You are an expert software architect with great attention to detail and experience reviewing technical texts",
+    "model_name": "gemini-2.0-flash",
+    "attachments": [],
+    "temperature": 0.1
+}

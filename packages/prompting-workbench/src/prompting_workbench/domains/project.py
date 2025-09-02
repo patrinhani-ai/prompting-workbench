@@ -36,7 +36,7 @@ class Project:
 
         print(f"[DEBUG] Project loaded: {self.data.id}")
 
-    def load_prompts(self, prompt_ids: list[str] = None):
+    def load_prompts(self, prompt_ids: list[str] = []):
         """
         Load prompts associated with the project.
         This method should be implemented to load prompts from the project directory.
@@ -63,3 +63,7 @@ class Project:
         :return: Loaded project object.
         """
         return Project(project_id)
+
+    # String representation
+    def __repr__(self):
+        return f"Project(id={self.project_id}, prompts={self.prompts})"
