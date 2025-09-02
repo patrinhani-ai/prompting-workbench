@@ -87,8 +87,8 @@ def _load_plugins_cli():
         # print(f"plugin_filename: {plugin_filename}")
         # print(f"plugin_cli_path: {plugin_cli_path}")
 
-        print(f"plugin_cli_module: {plugin_cli_module}")
-        print(f"plugin_cli_module.plugin: {plugin_cli_module.plugin}")
+        # print(f"plugin_cli_module: {plugin_cli_module}")
+        # print(f"plugin_cli_module.plugin: {plugin_cli_module.plugin}")
 
 
 @typer_app.callback(invoke_without_command=True)
@@ -128,11 +128,11 @@ def typer_callback(
         ),
     ] = False,
 ):
-    print(f"[DEBUG] Project: {project}")
-    print(f"[DEBUG] Prompts: {prompts}")
-    print(f"[DEBUG] Debug: {debug}")
-    print(f"[DEBUG] Dry Run: {dry_run}")
-    print(f"[DEBUG] Context: {ctx}")
+    # print(f"[DEBUG] Project: {project}")
+    # print(f"[DEBUG] Prompts: {prompts}")
+    # print(f"[DEBUG] Debug: {debug}")
+    # print(f"[DEBUG] Dry Run: {dry_run}")
+    # print(f"[DEBUG] Context: {ctx}")
 
     global cli_engine
     cli_engine.start(project=project, prompts=prompts)
@@ -140,6 +140,8 @@ def typer_callback(
     ctx.obj = {
         **(dict(ctx.obj) if ctx.obj else {}),
         **(cli_engine.context.__dict__ or {}),
+        "debug": debug,
+        "dry_run": dry_run,
     }
 
 

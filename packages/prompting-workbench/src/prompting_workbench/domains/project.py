@@ -34,7 +34,7 @@ class Project:
 
         self.data = self.repository.get_project(self.project_id)
 
-        print(f"[DEBUG] Project loaded: {self.data.id}")
+        # print(f"[DEBUG] Project loaded: {self.data.id}")
 
     def load_prompts(self, prompt_ids: list[str] = []):
         """

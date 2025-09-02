@@ -61,19 +61,17 @@ class CliEngine(ICliEngine):
                 f"Projects directory '{settings.projects_dir}' does not exist."
             )
 
-        print(f"[DEBUG] Projects directory: {settings.projects_dir}")
+        # print(f"[DEBUG] Projects directory: {settings.projects_dir}")
 
     def prepare(self):
-        print("[DEBUG] Preparing CLI Engine...")
+        # print("[DEBUG] Preparing CLI Engine...")
         self._check_settings()
 
         self._load_plugins()
 
     def start(self, project: str, prompts: list[str]):
-        print("[DEBUG] Starting CLI Engine...")
-
+        # print("[DEBUG] Starting CLI Engine...")
         self._load_project(project)
-
         self.project.load_prompts(list(set(prompts)))
 
         # arg__command = args.command or "default"
