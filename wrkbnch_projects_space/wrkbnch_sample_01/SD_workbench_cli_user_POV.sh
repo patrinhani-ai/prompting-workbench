@@ -14,7 +14,7 @@ pdm run prompting_workbench run wrkbnch_sample_01 -P 01-01--sample_prompt --test
 # New ------------------------------------------------------
 
 # Run all prompts of the "wrkbnch_sample_01" project
-pdm run prompting_workbench runnner wrkbnch_sample_01
+pdm run prompting_workbench --project wrkbnch_sample_01 runnner
 
 # Run a specific prompt of the "wrkbnch_sample_01" project
 pdm run prompting_workbench runner wrkbnch_sample_01 -P 01-01--sample_prompt
