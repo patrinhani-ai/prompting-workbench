@@ -72,7 +72,7 @@ class CliEngine(ICliEngine):
     def start(self, project: str, prompts: list[str]):
         # print("[DEBUG] Starting CLI Engine...")
 
-        print(f"[DEBUG] Project: {project}")
+        # print(f"[DEBUG] Project: {project}")
 
         self._load_project(project)
         self.project.load_prompts(list(set(prompts)))

@@ -51,9 +51,9 @@ class Project:
             prompt = Prompt.load(self.project_id, prompt_id)
             self.prompts.append(prompt)
 
-        print(f"[DEBUG] Prompts loaded for project: {self.project_id}")
-        for prompt in self.prompts:
-            print(f"[DEBUG] Prompt ID: {prompt.prompt_id}, Data: {prompt.data}")
+        # print(f"[DEBUG] Prompts loaded for project: {self.project_id}")
+        # for prompt in self.prompts:
+        #     print(f"[DEBUG] Prompt ID: {prompt.prompt_id}, Data: {prompt.data}")
 
     @staticmethod
     def load(project_id: str):

@@ -1,3 +1,6 @@
+import concurrent
+
+from .domains.runner_task import llm_runner_task
 from .._base_cli_plugin import BaseCliPlugin
 
 # from .tasks import PromptTestRunner, task_llm_runner
@@ -50,15 +53,44 @@ class RunnerCliPlugin(BaseCliPlugin):
 
         self.output_folder = output_folder
 
-        print(
-            f"[DEBUG][{self.get_plugin_name()}] Prepared plugin with output folder: {self.output_folder}"
-        )
+        # print(
+        #     f"[DEBUG][{self.get_plugin_name()}] Prepared plugin with output folder: {self.output_folder}"
+        # )
 
     def run(self):
-        print(
-            f"[DEBUG][{self.get_plugin_name()}] Running plugin: {self.get_plugin_name()}..."
-        )
-        print(f"[DEBUG][{self.get_plugin_name()}] Running with context: {self.context}")
+        # print(
+        #     f"[DEBUG][{self.get_plugin_name()}] Running plugin: {self.get_plugin_name()}..."
+        # )
+        # print(f"[DEBUG][{self.get_plugin_name()}] Running with context: {self.context}")
+        project = self.project
+
+        if not project:
+            print(f"[ERROR][{self.get_plugin_name()}] No project found.")
+            return
+
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            futures = []
+
+            task_idx = 0
+            for prompt in project.prompts:
+                prompt_id = prompt.prompt_id
+                task_key = f"{prompt_id}-task_{task_idx}"
+                futures.append(
+                    executor.submit(
+                        llm_runner_task,
+                        task_key,
+                        project,
+                        prompt,
+                        self.output_folder,
+                        self,
+                        self.context.debug,
+                        self.context.dry_run,
+                    )
+                )
+                task_idx += 1
+
+            for future in concurrent.futures.as_completed(futures):
+                future.result()
 
     def __repr__(self):
         return f"<{self.__class__.__name__} output_folder={self.output_folder}>"

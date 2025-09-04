@@ -8,6 +8,9 @@ class Prompt:
     This class is used to manage the prompt domain, including loading and saving prompt.
     """
 
+    project_id: str
+    prompt_id: str
+
     data: PromptModel
 
     repository: PromptRepository
@@ -26,7 +29,7 @@ class Prompt:
 
         self.data = self.repository.get_prompt(self.project_id, self.prompt_id)
 
-        print(f"[DEBUG] Prompt loaded: {self.data.id}")
+        # print(f"[DEBUG] Prompt loaded: {self.data.id}")
 
     @staticmethod
     def load(project_id: str, prompt_id: str):

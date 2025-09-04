@@ -1,7 +1,9 @@
 import os
 import sys
 import dotenv
+from prompting_workbench.plugins._base_cli_plugin import BaseCliPlugin
 import typer
+from rich.console import Console
 
 from typing import List
 from prompting_workbench.cli_engine_types import ICliEngine
@@ -50,10 +52,25 @@ typer_app = typer.Typer(no_args_is_help=True, help=CLI_EXTRA_HELP)
 
 cli_engine: ICliEngine
 
+console = Console()
+
 
 def setup():
     # Reload the variables in your '.env' file (override the existing variables)
     dotenv.load_dotenv(".env", override=True)
+
+
+def print_plugin_status(plugin: BaseCliPlugin, key: str, status: str, text: str):
+    str_plugin_name = f"\[[magenta]{plugin.get_plugin_name()}[/magenta]]"
+    str_key = f"\[[royal_blue1]{key}[/royal_blue1]]"
+
+    str_status = ""
+    if status == "running":
+        str_status = f"\[[yellow]{status}[/yellow]]"
+    elif status == "done":
+        str_status = f"\[[green]{status}[/green]]"
+
+    console.print(f"{str_plugin_name}{str_key}{str_status} {text}")
 
 
 def _load_plugins_cli():
@@ -78,6 +95,8 @@ def _load_plugins_cli():
         plugin_cli_module.plugin = plugin
 
         plugin_typer_app = plugin_cli_module.typer_app
+
+        plugin.listen_on_status_update(print_plugin_status)
 
         typer_app.add_typer(plugin_typer_app)
 
@@ -134,6 +153,17 @@ def typer_callback(
     # print(f"[DEBUG] Dry Run: {dry_run}")
     # print(f"[DEBUG] Context: {ctx}")
 
+    console.rule("[ [bold cyan]Prompt Workbench[/bold cyan] ]")
+    console.print()
+
+    str_out_selected_project = "SINGLE" if project == "NONE" else project
+    str_out_selected_prompts = "ALL" if len(prompts) == 0 else ", ".join(prompts)
+
+    console.print(f"Project: [bold green]{str_out_selected_project}[/bold green]")
+    console.print(f"Prompts: [bold green]{str_out_selected_prompts}[/bold green]")
+
+    console.print()
+
     global cli_engine
     cli_engine.start(project=project, prompts=prompts)
 
@@ -148,9 +178,9 @@ def typer_callback(
 def main():
     setup()
 
-    WRKBNCH_TGGL_ENGINE_VERSION = os.getenv("WRKBNCH_TGGL_ENGINE_VERSION", "stable")
+    # WRKBNCH_TGGL_ENGINE_VERSION = os.getenv("WRKBNCH_TGGL_ENGINE_VERSION", "stable")
 
-    print(f"Using Prompting Workbench Engine Version: {WRKBNCH_TGGL_ENGINE_VERSION}")
+    # print(f"Using Prompting Workbench Engine Version: {WRKBNCH_TGGL_ENGINE_VERSION}")
 
     from prompting_workbench.cli_engine import CliEngine
 
