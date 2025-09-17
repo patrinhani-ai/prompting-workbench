@@ -1,4 +1,4 @@
-# Prompting Workbench
+# Prompting Workbench (WIP)
 
 A modular command-line workbench for developing, running, organizing, and evaluating Generative AI prompts across multiple Large Language Models (LLMs) and providers. Built for practitioners who want **reproducibility**, **structured experimentation**, **extensibility**, and **automation** in their prompt engineering workflows.
 
