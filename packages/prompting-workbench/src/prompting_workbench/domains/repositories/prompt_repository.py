@@ -7,11 +7,17 @@ from prompting_workbench.domains.repositories._core.fs_repository_base import (
 
 
 class PromptRepository(FileSystemRepositoryBase):
+    def get_project_dir(self, project_id: str) -> str:
+        if (not project_id) or (project_id.strip() == ""):
+            return os.path.join(self.projects_dir)
+
+        return os.path.join(self.projects_dir, project_id)
+
     def __init__(self):
         super().__init__()
 
     def get_all_prompt_ids(self, project_id) -> list[str]:
-        project_path = os.path.join(self.projects_dir, project_id)
+        project_path = self.get_project_dir(project_id)
 
         if not os.path.isdir(project_path):
             raise ValueError(f"Project {project_id} does not exist")
@@ -34,7 +40,7 @@ class PromptRepository(FileSystemRepositoryBase):
         return prompts
 
     def get_prompt(self, project_id, prompt_id) -> PromptModel:
-        project_path = os.path.join(self.projects_dir, project_id)
+        project_path = self.get_project_dir(project_id)
 
         if not os.path.isdir(project_path):
             raise ValueError(f"Project {project_id} does not exist")

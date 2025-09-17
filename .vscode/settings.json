@@ -22,5 +22,16 @@
     "titleBar.inactiveBackground": "#1857a499",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "peacock.color": "#1857a4"
+  "peacock.color": "#1857a4",
+  "ruff.enable": true,
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "charliermarsh.ruff",
+  },
+  "[json]": {
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.suggest.insertMode": "replace"
+  }
 }

@@ -1,0 +1,14 @@
+{
+  "push": {
+    "workbench": {},
+    "flow": {
+      // "domain": "com.cit.patrinhani.wrkbnch.agent:[{PROJECT_ID}].step:[{STEP_ID}].prompt:[{PROMPT_ID}]",
+      "name": "{AGENT_PREFIX}[SAMPLE][01][01.01] Sample Prompt",
+      "completionOptions": {
+        "model": "gemini20flash",
+        "temperature": 0.8
+      },
+      "enabled": true
+    }
+  }
+}

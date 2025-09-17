@@ -1,42 +1,57 @@
-import argparse
-import datetime
-import os
 from abc import abstractmethod
 
 from prompting_workbench.domains.project import Project
+from prompting_workbench.wrkbnch_context import WrkbnchContext
+
+from blinker import signal
 
 
 class BaseCliPlugin:
-    root_parser: argparse.ArgumentParser
-    project: Project
-    context: dict
-    cli_args: argparse.Namespace
+    context: WrkbnchContext
+
+    on_status_update = signal("on_status_update")
+
+    def listen_on_status_update(self, handler):
+        self.on_status_update.connect(handler)
+
+    def disconnect_status_update(self, handler):
+        self.on_status_update.disconnect(handler)
+
+    def notify_status_update(self, key: str, status: str = "", text: str = ""):
+        self.on_status_update.send(self, key=key, status=status, text=text)
 
     @property
-    def arg__debug(self):
-        return self.cli_args.debug
+    def project(self) -> Project | None:
+        return self.context.project
 
-    @property
-    def arg__dry_run(self):
-        return self.cli_args.dry_run
+    # output_folder: str
 
-    @property
-    def arg__project_prompts(self):
-        return self.cli_args.prompts or []
+    # @property
+    # def arg__debug(self):
+    #     return self.cli_args.debug
 
-    @property
-    def output_target_path(self):
-        return self.context.get("target_project_dir", self.cli_args.output_folder)
+    # @property
+    # def arg__dry_run(self):
+    #     return self.cli_args.dry_run
 
-    def __init__(self, root_parser: argparse.ArgumentParser):
+    # @property
+    # def arg__project_prompts(self):
+    #     return self.cli_args.prompts or []
+
+    # @property
+    # def output_target_path(self):
+    #     return self.context.get("target_project_dir", self.output_folder)
+
+    def __init__(self):
         super().__init__()
-        self.context = {}
-        self.cli_args = argparse.Namespace()
-        self.root_parser = root_parser
+        self.context = WrkbnchContext()
+
+    def set_context(self, **kargs):
+        self.context = WrkbnchContext(**kargs)
 
     @abstractmethod
     def get_plugin_name(self):
-        return self.plugin_name
+        return "no_name"
 
     @abstractmethod
     def get_plugin_description(self):
@@ -46,33 +61,16 @@ class BaseCliPlugin:
     def get_plugin_help(self):
         return "No help available"
 
+    @abstractmethod
+    def get_plugin_file_path(self):
+        return __file__
+
     def get_plugin_command(self):
         return self.get_plugin_name()
 
-    def set_plugin_arguments(self, parser: argparse.ArgumentParser):
-        return parser
-
-    def prepare(self):
-        self.cli_args = self.root_parser.parse_args()
-
-        arg__project_name = self.cli_args.project or "NONE"
-        arg__output_folder = self.cli_args.output_folder or "output"
-        arg__project_name = self.cli_args.project
-
-        if arg__project_name != "NONE":
-            self.project = Project.load_from_store(arg__project_name)
-
-        init_timestamp_str = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-        self.context = {
-            "init_timestamp_str": init_timestamp_str,
-            "target_project_dir": os.path.join(
-                arg__output_folder,
-                "prompting_workbench",
-                self.get_plugin_command(),
-                arg__project_name,
-                init_timestamp_str,
-            ),
-        }
+    @abstractmethod
+    def prepare(self, *args, **kwargs):
+        self.set_context(**kwargs.get("context", {}))
 
     @abstractmethod
     def run(self):
