@@ -1,3 +1,4 @@
+import datetime
 import os
 import sys
 import dotenv
@@ -61,8 +62,13 @@ def setup():
 
 
 def print_plugin_status(plugin: BaseCliPlugin, key: str, status: str, text: str):
-    str_plugin_name = f"\[[magenta]{plugin.get_plugin_name()}[/magenta]]"
-    str_key = f"\[[royal_blue1]{key}[/royal_blue1]]"
+    event_time = f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"
+
+    str_plugin_name = (
+        f"\[[magenta]{plugin.get_plugin_name()}[/magenta]]" if plugin else ""
+    )
+
+    str_key = f"\[[royal_blue1]{key}[/royal_blue1]]" if key else ""
 
     str_status = ""
     if status == "running":
@@ -70,7 +76,7 @@ def print_plugin_status(plugin: BaseCliPlugin, key: str, status: str, text: str)
     elif status == "done":
         str_status = f"\[[green]{status}[/green]]"
 
-    console.print(f"{str_plugin_name}{str_key}{str_status} {text}")
+    console.print(f"[{event_time}]{str_plugin_name}{str_key}{str_status} {text}")
 
 
 def _load_plugins_cli():
