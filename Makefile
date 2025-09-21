@@ -5,6 +5,14 @@
 # Use SHELL to ensure bash is used for consistency
 SHELL := /bin/bash
 
+# If the first argument is "run"...
+ifeq (run,$(firstword $(MAKECMDGOALS)))
+  # use the rest as arguments for "run"
+  RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  # ...and turn them into do-nothing targets
+  $(eval $(RUN_ARGS):;@:)
+endif
+
 # Default target: 'help'
 help:
 	@echo "Available commands:"
@@ -28,7 +36,8 @@ setup: install
 # Target to run the CLI
 run:
 	@echo "--- Running Prompting Workbench CLI ---"
-	uv run prompting_workbench $(ARGS)
+	@echo "Arguments: $(RUN_ARGS)"
+	uv run prompting_workbench $(RUN_ARGS)
 
 # Target for linting
 lint:
