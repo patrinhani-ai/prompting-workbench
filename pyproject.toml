@@ -34,10 +34,11 @@ quote-style = "double"
 [tool.ruff]
 exclude = [".venv"]
 
-[project.scripts]
-lint = "ruff check ."
-format = "ruff format ."
-lint-fix = "ruff check . --fix"
+# [project.scripts]
+# lint = "ruff check ."
+# format = "ruff format ."
+# lint-fix = "ruff check . --fix"
+# test = "pytest"
 
 # [build-system]
 # requires = ["uv_build>=0.8.7,<0.9.0"]

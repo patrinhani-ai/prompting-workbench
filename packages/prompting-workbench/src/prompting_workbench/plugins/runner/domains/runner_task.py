@@ -48,7 +48,7 @@ class RunnerPluginTask:
             print(f"[DEBUG] Output directory: {output_dir}")
 
         if self.dry_run:
-            print(f"[DRY RUN] Skipping output directory creation...")
+            print("[DRY RUN] Skipping output directory creation...")
             return output_dir
 
         os.makedirs(output_dir, exist_ok=True)
@@ -62,6 +62,8 @@ class RunnerPluginTask:
         )
 
         output_run_task_dir = self._prepare_output_dir()
+
+        print(f"Running LLM runner task... Output dir: {output_run_task_dir}")
 
         time.sleep(random.uniform(4, 8))
 

@@ -1,7 +1,7 @@
 from typing import Annotated
 import typer
 from rich.console import Console
-from rich.progress import Progress, BarColumn, TextColumn
+from rich.progress import Progress
 
 from prompting_workbench.plugins.runner.runner import RunnerCliPlugin
 
