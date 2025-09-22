@@ -1,0 +1,7 @@
+{
+  "defaults": {
+    "prompt": {
+      "system": "You are a helpful assistant."
+    }
+  }
+}

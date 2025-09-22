@@ -48,7 +48,11 @@ class Project:
         # Here you would implement the logic to load prompts from the project directory
 
         for prompt_id in prompt_ids:
-            prompt = Prompt.load(self.project_id, prompt_id)
+            prompt = Prompt.load(
+                self.project_id,
+                prompt_id,
+                defaults=self.data.defaults.get("prompt", {}),
+            )
             self.prompts.append(prompt)
 
         # print(f"[DEBUG] Prompts loaded for project: {self.project_id}")

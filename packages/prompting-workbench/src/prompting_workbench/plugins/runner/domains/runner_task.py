@@ -65,6 +65,17 @@ class RunnerPluginTask:
 
         print(f"Running LLM runner task... Output dir: {output_run_task_dir}")
 
+        # DEBUG: Print prompt details
+        print(f"[DEBUG] Project ID: {self.project.project_id}")
+        print(f"[DEBUG] Project Data: {self.project.data}")
+
+        print("-" * 80)
+
+        print(f"[DEBUG] Prompt ID: {self.prompt.prompt_id}")
+        print(f"[DEBUG] Prompt System: {self.prompt.data.system}")
+        print(f"[DEBUG] Prompt System Path: {self.prompt.data.system.file_abs_path}")
+        print(f"[DEBUG] Prompt System Lazy Value: {self.prompt.data.system.render()}")
+
         time.sleep(random.uniform(4, 8))
 
         self.plugin.notify_status_update(

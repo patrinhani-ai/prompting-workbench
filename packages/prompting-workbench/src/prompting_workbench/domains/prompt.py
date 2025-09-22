@@ -12,12 +12,14 @@ class Prompt:
     prompt_id: str
 
     data: PromptModel
+    defaults: dict = {}
 
     repository: PromptRepository
 
-    def __init__(self, project_id: str, prompt_id: str):
+    def __init__(self, project_id: str, prompt_id: str, defaults: dict = {}):
         self.project_id = project_id
         self.prompt_id = prompt_id
+        self.defaults = defaults
         self.repository = PromptRepository()
 
         self._load()
@@ -27,15 +29,17 @@ class Prompt:
         Load the prompt data from the file system or other storage.
         """
 
-        self.data = self.repository.get_prompt(self.project_id, self.prompt_id)
+        self.data = self.repository.get_prompt(
+            self.project_id, self.prompt_id, self.defaults
+        )
 
         # print(f"[DEBUG] Prompt loaded: {self.data.id}")
 
     @staticmethod
-    def load(project_id: str, prompt_id: str):
+    def load(project_id: str, prompt_id: str, defaults: dict = {}):
         """
         Load a prompt by its name.
         :param prompt_name: Name of the prompt to load.
         :return: Loaded prompt object.
         """
-        return Prompt(project_id, prompt_id)
+        return Prompt(project_id, prompt_id, defaults=defaults)
