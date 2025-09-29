@@ -26,12 +26,13 @@
   "ruff.enable": true,
   "[python]": {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.defaultFormatter": "charliermarsh.ruff"
   },
   "[json]": {
     "editor.quickSuggestions": {
       "strings": true
     },
     "editor.suggest.insertMode": "replace"
-  }
+  },
+  "makefile.configureOnOpen": false
 }

@@ -17,3 +17,9 @@ class PromptModel(ModelBase):
         PlainValidator(py_validator_content_str_renderer),
         PlainSerializer(lambda x: x.lazy_value, str),
     ] = ContentStrRenderer("")
+
+    prompt: Annotated[
+        ContentStrRenderer,
+        PlainValidator(py_validator_content_str_renderer),
+        PlainSerializer(lambda x: x.lazy_value, str),
+    ] = ContentStrRenderer("")

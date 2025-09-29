@@ -72,9 +72,14 @@ class RunnerPluginTask:
         print("-" * 80)
 
         print(f"[DEBUG] Prompt ID: {self.prompt.prompt_id}")
+
         print(f"[DEBUG] Prompt System: {self.prompt.data.system}")
         print(f"[DEBUG] Prompt System Path: {self.prompt.data.system.file_abs_path}")
         print(f"[DEBUG] Prompt System Lazy Value: {self.prompt.data.system.render()}")
+
+        print(f"[DEBUG] Prompt Content: {self.prompt.data.prompt}")
+        print(f"[DEBUG] Prompt Content Path: {self.prompt.data.prompt.file_abs_path}")
+        print(f"[DEBUG] Prompt Content Lazy Value: {self.prompt.data.prompt.render()}")
 
         time.sleep(random.uniform(4, 8))
 

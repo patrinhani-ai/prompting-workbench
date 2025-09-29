@@ -1,7 +1,8 @@
 {
   "defaults": {
     "prompt": {
-      "system": "You are a helpful assistant."
+      "system": "You are a helpful assistant.",
+      "prompt": "What is the capital of France?"
     }
   }
 }
