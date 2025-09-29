@@ -34,9 +34,9 @@ class Project:
 
         self.data = self.repository.get_project(self.project_id)
 
-        print(f"[DEBUG] Project loaded: {self.data.id}")
+        # print(f"[DEBUG] Project loaded: {self.data.id}")
 
-    def load_prompts(self, prompt_ids: list[str] = None):
+    def load_prompts(self, prompt_ids: list[str] = []):
         """
         Load prompts associated with the project.
         This method should be implemented to load prompts from the project directory.
@@ -48,12 +48,16 @@ class Project:
         # Here you would implement the logic to load prompts from the project directory
 
         for prompt_id in prompt_ids:
-            prompt = Prompt.load(self.project_id, prompt_id)
+            prompt = Prompt.load(
+                self.project_id,
+                prompt_id,
+                defaults=self.data.defaults.get("prompt", {}),
+            )
             self.prompts.append(prompt)
 
-        print(f"[DEBUG] Prompts loaded for project: {self.project_id}")
-        for prompt in self.prompts:
-            print(f"[DEBUG] Prompt ID: {prompt.prompt_id}, Data: {prompt.data}")
+        # print(f"[DEBUG] Prompts loaded for project: {self.project_id}")
+        # for prompt in self.prompts:
+        #     print(f"[DEBUG] Prompt ID: {prompt.prompt_id}, Data: {prompt.data}")
 
     @staticmethod
     def load(project_id: str):
@@ -63,3 +67,7 @@ class Project:
         :return: Loaded project object.
         """
         return Project(project_id)
+
+    # String representation
+    def __repr__(self):
+        return f"Project(id={self.project_id}, prompts={self.prompts})"

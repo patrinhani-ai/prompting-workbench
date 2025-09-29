@@ -1,9 +1,14 @@
-class WrkbnchContext:
-    """
-    Context manager for the prompting workbench.
-    This class is used to manage the context of the prompting workbench,
-    including the loaded project, prompts, etc.
-    """
+from prompting_workbench.domains.project import Project
 
-    def __init__(self):
-        self.project = None
+
+class WrkbnchContext:
+    project: Project | None = None
+    debug: bool = False
+    dry_run: bool = False
+
+    def __init__(
+        self, project: Project | None = None, debug: bool = False, dry_run: bool = False
+    ):
+        self.project = project
+        self.debug = debug
+        self.dry_run = dry_run

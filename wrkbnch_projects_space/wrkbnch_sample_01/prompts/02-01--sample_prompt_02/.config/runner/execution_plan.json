@@ -1,0 +1,25 @@
+{
+  // "llm_provider": "azure-openai",
+  // "llm_model": "gpt-4o",
+  // "temperature": 1.5,
+  // "llm_custom_params": {
+  // },
+  "system_input": {
+  },
+  "prompt_input": {
+  },
+  "attachments": [
+  ],
+  "tasks": [
+    {
+      "llm_provider": "google-gemini",
+      "llm_model": "gemini-2.0-flash",
+      "temperature": 1.5
+    },
+    {
+      "llm_provider": "google-gemini",
+      "llm_model": "gemini-2.0-flash",
+      "temperature": 0.8
+    }
+  ]
+}

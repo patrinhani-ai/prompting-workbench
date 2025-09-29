@@ -1,4 +1,4 @@
-from ._core.model_base import ModelBase
+from prompting_workbench.core.models.model_base import ModelBase
 
 
 class ProjectModel(ModelBase):
@@ -7,3 +7,5 @@ class ProjectModel(ModelBase):
     """
 
     id: str
+
+    defaults: dict = {}

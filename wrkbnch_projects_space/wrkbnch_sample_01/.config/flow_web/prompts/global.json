@@ -1,0 +1,44 @@
+{
+  // "variables": {
+  //   "PROJECT_ID": {
+  //     "type": "string",
+  //     "default": "sample-project-01"
+  //   },
+  //   "STEP_ID": {
+  //     "type": "string",
+  //     "default": "sample-step-01"
+  //   },
+  //   "PROMPT_ID": {
+  //     "type": "string",
+  //     "default": "sample-prompt-01"
+  //   }
+  // },
+  "defaults": {
+    "filters": {
+      "by_name": {
+        "starts_with": "[PATRINHANI-WRKBNCH][SAMPLE-001]"
+      }
+    }
+  },
+  "push": {
+    "defaults": {
+      "workbench": {
+        "prompt_input": {
+          "context_text": "{{wf.parent.content}}"
+        }
+      },
+      "flow": {
+        "domain": "com.cit.patrinhani.wrkbnch.agent:[{PROJECT_ID}].step:[{STEP_ID}].prompt:[{PROMPT_ID}]",
+        "category": "6758347d6a0594bc7123f759",
+        "enabled": true,
+        "rules": [
+          {
+            "groups": [
+              "67a65d33dca8c6e1720ee6af"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "defaults": {
+    "filters": {
+      "by_name": {
+        "starts_with": "[PATRINHANI-WRKBNCH][SAMPLE] Prompt Workbench Sample Steps - 01"
+      }
+    }
+  },
+  "push": {
+    "defaults": {
+      "flow": {
+        "isActive": true,
+        "category": "6758347d6a0594bc7123f759",
+        "rules": [
+          {
+            "groups": [
+              "67a65d33dca8c6e1720ee6af"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
