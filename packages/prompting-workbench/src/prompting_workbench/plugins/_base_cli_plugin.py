@@ -1,6 +1,12 @@
 from abc import abstractmethod
 
 from prompting_workbench.domains.project import Project
+from prompting_workbench.domains.repositories._core.meta_config_fs_repository import (
+    MetaConfigFileSystemRepository,
+)
+from prompting_workbench.domains.repositories._core.meta_config_repository_base import (
+    MetaConfigRepositoryBase,
+)
 from prompting_workbench.wrkbnch_context import WrkbnchContext
 
 from blinker import signal
@@ -8,6 +14,7 @@ from blinker import signal
 
 class BaseCliPlugin:
     context: WrkbnchContext
+    meta_config_repository: MetaConfigRepositoryBase
 
     on_status_update = signal("on_status_update")
 
@@ -45,6 +52,9 @@ class BaseCliPlugin:
     def __init__(self):
         super().__init__()
         self.context = WrkbnchContext()
+        self.meta_config_repository = MetaConfigFileSystemRepository(
+            plugin_instance=self
+        )
 
     def set_context(self, **kargs):
         self.context = WrkbnchContext(**kargs)

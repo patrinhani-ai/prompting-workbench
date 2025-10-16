@@ -11,14 +11,14 @@ class ProjectRepository(FileSystemRepositoryBase):
     def __init__(self):
         super().__init__()
 
-    def _get_project_dir(self, project_id: str) -> str:
+    def get_project_dir(self, project_id: str = "") -> str:
         if (not project_id) or (project_id.strip() == ""):
             return os.path.join(self.projects_dir)
 
         return os.path.join(self.projects_dir, project_id)
 
     def get_project_config_path(self, project_id) -> str:
-        project_dir = self._get_project_dir(project_id)
+        project_dir = self.get_project_dir(project_id)
 
         if not os.path.isdir(project_dir):
             raise ValueError(f"Project {project_id} does not exist")

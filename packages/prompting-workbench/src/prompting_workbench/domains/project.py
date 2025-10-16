@@ -59,6 +59,12 @@ class Project:
         # for prompt in self.prompts:
         #     print(f"[DEBUG] Prompt ID: {prompt.prompt_id}, Data: {prompt.data}")
 
+    def get_prompt_by_id(self, prompt_id: str) -> Prompt | None:
+        for prompt in self.prompts:
+            if prompt.prompt_id == prompt_id:
+                return prompt
+        return None
+
     @staticmethod
     def load(project_id: str):
         """

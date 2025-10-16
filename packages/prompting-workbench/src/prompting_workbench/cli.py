@@ -40,7 +40,7 @@ Environment variables:
 
 - PMPT_WRKBNCH_PROJECTS_DIR (default: ./wrkbnch_projects): Directory where the projects are stored,
 
-Obs.: 
+Obs.:
 
 - all environment variable used by this tool must have the prefix 'PMPT_WRKBNCH_'.
 
@@ -106,7 +106,7 @@ def _load_plugins_cli():
 
         typer_app.add_typer(plugin_typer_app)
 
-        # print(f"plugin_name: {plugin_name}")
+        print(f"plugin_name: {plugin_name}")
         # print(f"plugin_file_path: {plugin_file_path}")
         # print(f"plugin_src_folder: {plugin_src_folder}")
         # print(f"plugin_filename: {plugin_filename}")

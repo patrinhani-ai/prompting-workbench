@@ -1,13 +1,18 @@
 import concurrent
 
+from prompting_workbench.plugins._base_cli_plugin import BaseCliPlugin
+from prompting_workbench.plugins.runner.domains.runner_controller import (
+    RunnerPluginController,
+)
+
 from .domains.runner_task import llm_runner_task
-from .._base_cli_plugin import BaseCliPlugin
 
 # from .tasks import PromptTestRunner, task_llm_runner
 
 
 class RunnerCliPlugin(BaseCliPlugin):
     output_folder: str
+    runner_controller: RunnerPluginController
 
     @property
     def output_target_path(self):
@@ -52,6 +57,8 @@ class RunnerCliPlugin(BaseCliPlugin):
         super().prepare(context=context)
 
         self.output_folder = output_folder
+
+        self.runner_controller = None
 
         # print(
         #     f"[DEBUG][{self.get_plugin_name()}] Prepared plugin with output folder: {self.output_folder}"
