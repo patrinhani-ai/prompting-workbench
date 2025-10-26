@@ -42,6 +42,7 @@ class MetaConfigFileSystemRepository(
                 self.plugin_instance.project.project_id, prompt_id
             ),
             ".config",
+            self.plugin_instance.get_plugin_name(),
         )
 
         if not os.path.isdir(prompt_config_dir):
@@ -49,26 +50,31 @@ class MetaConfigFileSystemRepository(
 
         return prompt_config_dir
 
-    def get_project_plugin_meta_config(self, config_filename: str) -> dict:
-        plugin_config_dir = self.get_project_plugin_config_dir()
-        meta_config_path = os.path.join(plugin_config_dir, config_filename)
+    def get_project_plugin_meta_config(self, config_name: str) -> dict:
+        try:
+            plugin_config_dir = self.get_project_plugin_config_dir()
+            config_filename = f"{config_name}.json"
+            meta_config_path = os.path.join(plugin_config_dir, config_filename)
 
-        if not os.path.isfile(meta_config_path):
-            raise ValueError(
-                f"Meta config for project {config_filename} does not exist"
-            )
+            if not os.path.isfile(meta_config_path):
+                raise ValueError(
+                    f"Meta config for project {config_filename} does not exist"
+                )
+            return get_json_content(meta_config_path)
+        except ValueError:
+            return {}
 
-        return get_json_content(meta_config_path)
+    def get_prompt_plugin_meta_config(self, prompt_id: str, config_name: str) -> dict:
+        try:
+            prompt_config_dir = self.get_prompt_plugin_config_dir(prompt_id)
+            config_filename = f"{config_name}.json"
+            meta_config_path = os.path.join(prompt_config_dir, config_filename)
 
-    def get_prompt_plugin_meta_config(
-        self, prompt_id: str, config_filename: str
-    ) -> dict:
-        prompt_config_dir = self.get_prompt_plugin_config_dir(prompt_id)
-        meta_config_path = os.path.join(prompt_config_dir, config_filename)
+            if not os.path.isfile(meta_config_path):
+                raise ValueError(
+                    f"Meta config for prompt {prompt_id} and file {config_filename} does not exist"
+                )
 
-        if not os.path.isfile(meta_config_path):
-            raise ValueError(
-                f"Meta config for prompt {prompt_id} and file {config_filename} does not exist"
-            )
-
-        return get_json_content(meta_config_path)
+            return get_json_content(meta_config_path)
+        except ValueError:
+            return {}

@@ -10,5 +10,11 @@ class MetaConfigRepositoryBase(RepositoryBase):
         self.plugin_instance = plugin_instance
 
     @abstractmethod
-    def get_project_plugin_meta_config(self, project_name: str) -> dict:
+    def get_project_plugin_meta_config(self, config_filename: str) -> dict:
+        pass
+
+    @abstractmethod
+    def get_prompt_plugin_meta_config(
+        self, prompt_id: str, config_filename: str
+    ) -> dict:
         pass

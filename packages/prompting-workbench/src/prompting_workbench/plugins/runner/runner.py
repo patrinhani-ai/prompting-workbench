@@ -1,26 +1,14 @@
-import concurrent
-
 from prompting_workbench.plugins._base_cli_plugin import BaseCliPlugin
 from prompting_workbench.plugins.runner.domains.runner_controller import (
     RunnerPluginController,
 )
 
-from .domains.runner_task import llm_runner_task
-
-# from .tasks import PromptTestRunner, task_llm_runner
-
 
 class RunnerCliPlugin(BaseCliPlugin):
-    output_folder: str
     runner_controller: RunnerPluginController
-
-    @property
-    def output_target_path(self):
-        return self.context.get("target_project_dir", self.output_folder)
 
     def __init__(self):
         super().__init__()
-        self.output_folder = "output"
 
     def get_plugin_name(self):
         return "runner"
@@ -56,48 +44,24 @@ class RunnerCliPlugin(BaseCliPlugin):
     def prepare(self, context: dict, output_folder: str):
         super().prepare(context=context)
 
-        self.output_folder = output_folder
+        if not self.project:
+            print(f"[ERROR][{self.get_plugin_name()}] No project found.")
+            return
 
-        self.runner_controller = None
+        self.runner_controller = RunnerPluginController(
+            plugin=self,
+            project=self.project,
+            context=self.context,
+            output_folder=output_folder,
+            meta_config_repository=self.meta_config_repository,
+        )
 
         # print(
         #     f"[DEBUG][{self.get_plugin_name()}] Prepared plugin with output folder: {self.output_folder}"
         # )
 
     def run(self):
-        # print(
-        #     f"[DEBUG][{self.get_plugin_name()}] Running plugin: {self.get_plugin_name()}..."
-        # )
-        # print(f"[DEBUG][{self.get_plugin_name()}] Running with context: {self.context}")
-        project = self.project
-
-        if not project:
-            print(f"[ERROR][{self.get_plugin_name()}] No project found.")
-            return
-
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            futures = []
-
-            task_idx = 0
-            for prompt in project.prompts:
-                prompt_id = prompt.prompt_id
-                task_key = f"{prompt_id}-task_{task_idx}"
-                futures.append(
-                    executor.submit(
-                        llm_runner_task,
-                        task_key,
-                        project,
-                        prompt,
-                        self.output_folder,
-                        self,
-                        self.context.debug,
-                        self.context.dry_run,
-                    )
-                )
-                task_idx += 1
-
-            for future in concurrent.futures.as_completed(futures):
-                future.result()
+        self.runner_controller.run_parallel()
 
     def __repr__(self):
-        return f"<{self.__class__.__name__} output_folder={self.output_folder}>"
+        return f"<{self.__class__.__name__} output_folder={self.runner_controller.output_folder}>"
