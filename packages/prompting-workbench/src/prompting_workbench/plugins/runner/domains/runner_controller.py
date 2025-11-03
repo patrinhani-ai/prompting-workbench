@@ -85,16 +85,13 @@ class RunnerPluginController:
                 task_key = f"{prompt_id}-task_{task_idx}"
                 prompt_exec_plan = self._load_prompt_execution_plan(prompt)
 
-                print(
-                    f"===========> [DEBUG][] Loaded execution plan for prompt {prompt_id}: {prompt_exec_plan}"
-                )
-
                 futures.append(
                     executor.submit(
                         llm_runner_task,
                         task_key,
                         project,
                         prompt,
+                        prompt_exec_plan,
                         self.output_folder,
                         self.plugin,
                         arg_debug,

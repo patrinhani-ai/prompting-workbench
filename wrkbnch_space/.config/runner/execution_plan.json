@@ -1,17 +1,14 @@
 {
-  "llm_provider": "azure-openai",
-  "llm_model": "gpt-4o",
+  "llm_provider": "openai",
+  "llm_model": "gpt-4.1",
   "temperature": 1.5,
-  "llm_custom_params": {
-  },
-  "system_input": {
-  },
-  "prompt_input": {
-  },
+  "llm_custom_params": {},
+  "system_input": {},
+  "prompt_input": {},
   "tasks": [
     {
-      "llm_provider": "azure-openai",
-      "llm_model": "gpt-4o"
+      "llm_provider": "openai",
+      "llm_model": "gpt-4.1"
     }
   ]
 }

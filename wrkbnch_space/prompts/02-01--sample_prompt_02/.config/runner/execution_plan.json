@@ -1,6 +1,6 @@
 {
-  "llm_provider": "azure-openai",
-  "llm_model": "gpt-4o",
+  "llm_provider": "openai",
+  "llm_model": "gpt-4.1",
   "temperature": 1.5,
   "llm_custom_params": {},
   "system_input": {},
@@ -8,13 +8,13 @@
   "attachments": [],
   "tasks": [
     {
-      "llm_provider": "google-gemini",
-      "llm_model": "gemini-2.0-flash",
+      "llm_provider": "google_genai",
+      "llm_model": "google_genai:gemini-2.5-flash-lite",
       "temperature": 1.5
     },
     {
-      "llm_provider": "google-gemini",
-      "llm_model": "gemini-2.0-flash",
+      "llm_provider": "google_genai",
+      "llm_model": "google_genai:gemini-2.5-flash-lite",
       "temperature": 0.8
     }
   ]

@@ -3,7 +3,7 @@ from prompting_workbench.core.models.model_base import ModelBase
 
 """
 {
-  "llm_provider": "azure-openai",
+  "llm_provider": "openai",
   "llm_model": "gpt-4o",
   "temperature": 1.5,
   "llm_custom_params": {},
@@ -12,12 +12,12 @@ from prompting_workbench.core.models.model_base import ModelBase
   "attachments": [],
   "tasks": [
     {
-      "llm_provider": "google-gemini",
+      "llm_provider": "google_genai",
       "llm_model": "gemini-2.0-flash",
       "temperature": 1.5
     },
     {
-      "llm_provider": "google-gemini",
+      "llm_provider": "google_genai",
       "llm_model": "gemini-2.0-flash",
       "temperature": 0.8
     }
@@ -42,7 +42,7 @@ class RunnerExecutionPlan(ModelBase):
     """
 
     id: Optional[str] = None
-    llm_provider: Optional[str] = "azure-openai"
+    llm_provider: Optional[str] = "openai"
     llm_model: Optional[str] = "gpt-4o"
     temperature: Optional[float] = 1.0
     llm_custom_params: Optional[dict] = {}
