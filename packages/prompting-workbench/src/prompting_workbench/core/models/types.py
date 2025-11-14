@@ -112,11 +112,8 @@ class ContentStrRenderer:
     def _render_file(self) -> str:
         return get_file_content(self.file_abs_path)
 
-    def _render_jinja(self, params: dict = None) -> str:
+    def _render_jinja(self, params: dict = {}) -> str:
         import jinja2
-
-        if params is None:
-            params = {}
 
         template = jinja2.Template(get_file_content(self.file_abs_path))
 
@@ -128,7 +125,7 @@ class ContentStrRenderer:
 
         return template.render(**render_params)
 
-    def render(self, params: dict = None) -> str:
+    def render(self, params: dict = {}) -> str:
         if self.value_type == "file":
             return self._render_file()
         elif self.value_type == "jinja":

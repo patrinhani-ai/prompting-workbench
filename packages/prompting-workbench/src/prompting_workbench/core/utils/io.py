@@ -25,6 +25,11 @@ def append_file(file_path, content):
         f.write(content)
 
 
+def write_json_file(file_path: str, data):
+    with open(file_path, "w") as f:
+        json.dump(data, f, indent=4)
+
+
 def walk_dir_files(folder_path: str) -> Iterator[tuple[str, str]]:
     if not os.path.exists(folder_path):
         raise ValueError(f"Folder {folder_path} does not exist")

@@ -25,12 +25,9 @@ As a prospective user, I want to register a new account by providing required pe
 ## Extra Information
 This user story covers the functionality related and required directly for standard user (Account manager related registration might have more fields such role details or account group info). Additional security features, further verification process like e-mail approval through e-mail may be integrated on top this for more complex systems/needs . This initial functionality can serve like foundational features for those.  The creation requires compliance towards international policies, regulations (related safety standards for users, in most markets: namely GDPR etc.) but for this initial development these constraints may assumed.  This model also implies that we are not handling User roles yet with it possible scalability(consider it as future phase of development); at later development phase , more complex scenarios / additional authentication logic can then be integrate or implement upon such existing initial business model, integrating different types user handling if a given application might have such  specific feature requirements (managers roles with enhanced  privilige  access; developers with other special authorizations .. et ).
 
-
 ### Relevant Design System Components
 - Button
 - Password Input
-
-
 
 ### Relevant API Services
 - UserSignup

@@ -1,7 +1,6 @@
 from datetime import datetime
 import os
-import random
-import time
+from prompting_workbench.core.utils.io import write_file, write_json_file
 from prompting_workbench.domains.project import Project
 from prompting_workbench.domains.prompt import Prompt
 from prompting_workbench.plugins._base_cli_plugin import BaseCliPlugin
@@ -53,6 +52,7 @@ class RunnerPluginTask:
         output_dir = os.path.join(
             self.output_folder,
             self.plugin.get_plugin_name(),
+            self.project.project_id,
             f"{self.task_key}--{timestamp}",
         )
 
@@ -100,10 +100,36 @@ class RunnerPluginTask:
         #     f"===========> [DEBUG][] Loaded execution plan for prompt {prompt.prompt_id}: {prompt_exec_plan}"
         # )
 
+        system_input = {
+            **(prompt.data.system_input or {}),
+            **(prompt_exec_plan.system_input or {}),
+        }
+
+        system_msg = SystemMessage(prompt.data.system.render(system_input))
+
+        if self.debug:
+            write_file(
+                os.path.join(output_run_task_dir, "system_message.debug.md"),
+                system_msg.content,
+            )
+
+        prompt_input = {
+            **(prompt.data.prompt_input or {}),
+            **(prompt_exec_plan.prompt_input or {}),
+        }
+
+        human_msg = HumanMessage(prompt.data.prompt.render(prompt_input))
+
+        if self.debug:
+            write_file(
+                os.path.join(output_run_task_dir, "human_message.debug.md"),
+                human_msg.content,
+            )
+
         prompt_template = ChatPromptTemplate(
             messages=[
-                SystemMessage(prompt.data.system.render()),
-                HumanMessage(prompt.data.prompt.render()),
+                system_msg,
+                human_msg,
             ]
         )
 
@@ -117,13 +143,23 @@ class RunnerPluginTask:
 
         from langchain_core.globals import set_debug
 
-        set_debug(True)
+        set_debug(self.debug)
 
         llm_result = llm_chain.invoke(
             input={},
             config=RunnableConfig(
                 run_name=f"runner_task--{self.task_key}",
             ),
+        )
+
+        write_file(
+            os.path.join(output_run_task_dir, "llm_result-content.md"),
+            str(llm_result.content),
+        )
+
+        write_json_file(
+            os.path.join(output_run_task_dir, "llm_result-metadata.json"),
+            llm_result.response_metadata,
         )
 
         set_debug(False)
