@@ -40,8 +40,12 @@ class CliEngine(ICliEngine):
         from prompting_workbench.plugins.runner.runner import (
             RunnerCliPlugin,
         )
+        from prompting_workbench.plugins.boilerplate.boilerplate import (
+            BoilerplateCliPlugin,
+        )
 
         self._load_plugin(RunnerCliPlugin())
+        self._load_plugin(BoilerplateCliPlugin())
 
     def _load_project(self, project_id: str):
         if project_id == "NONE":
@@ -74,8 +78,13 @@ class CliEngine(ICliEngine):
 
         # print(f"[DEBUG] Project: {project}")
 
-        self._load_project(project)
-        self.project.load_prompts(list(set(prompts)))
+        # Skip loading project for NONE/empty project (used by boilerplate commands)
+        if project and project != "NONE":
+            self._load_project(project)
+            self.project.load_prompts(list(set(prompts)))
+        else:
+            # For NONE projects, just set an empty context
+            self.context.project = None
 
         # arg__command = args.command or "default"
 

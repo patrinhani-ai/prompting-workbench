@@ -32,10 +32,16 @@ class ProjectRepository(FileSystemRepositoryBase):
         return project_config_path
 
     def get_project_config(self, project_id) -> dict:
+        # This method returns an empty dict if project_id is empty. Usually used for single project as root of the workspace frolder.
+        if (not project_id) or (project_id.strip() == ""):
+            return {}
+
         project_config_path = self.get_project_config_path(project_id)
 
         if not os.path.isfile(project_config_path):
-            raise ValueError(f"Project config for project {project_id} does not exist")
+            # raise ValueError(f"Project config for project {project_id} does not exist")
+            print(f"[WARN] Project config for project {project_id} does not exist")
+            return {}
 
         return get_json_content(project_config_path)
 
