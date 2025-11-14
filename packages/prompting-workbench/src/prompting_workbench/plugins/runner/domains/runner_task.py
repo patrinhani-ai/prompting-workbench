@@ -77,28 +77,8 @@ class RunnerPluginTask:
 
         print(f"Running LLM runner task... Output dir: {output_run_task_dir}")
 
-        # # DEBUG: Print prompt details
-        # print(f"[DEBUG] Project ID: {self.project.project_id}")
-        # print(f"[DEBUG] Project Data: {self.project.data}")
-
-        # print("-" * 80)
-
-        # print(f"[DEBUG] Prompt ID: {self.prompt.prompt_id}")
-
-        # print(f"[DEBUG] Prompt System: {self.prompt.data.system}")
-        # print(f"[DEBUG] Prompt System Path: {self.prompt.data.system.file_abs_path}")
-        # print(f"[DEBUG] Prompt System Lazy Value: {self.prompt.data.system.render()}")
-
-        # print(f"[DEBUG] Prompt Content: {self.prompt.data.prompt}")
-        # print(f"[DEBUG] Prompt Content Path: {self.prompt.data.prompt.file_abs_path}")
-        # print(f"[DEBUG] Prompt Content Lazy Value: {self.prompt.data.prompt.render()}")
-
         prompt = self.prompt
         prompt_exec_plan = self.prompt_exec_plan
-
-        # print(
-        #     f"===========> [DEBUG][] Loaded execution plan for prompt {prompt.prompt_id}: {prompt_exec_plan}"
-        # )
 
         system_input = {
             **(prompt.data.system_input or {}),
@@ -158,16 +138,16 @@ class RunnerPluginTask:
         )
 
         write_json_file(
-            os.path.join(output_run_task_dir, "llm_result-metadata.json"),
+            os.path.join(output_run_task_dir, "llm_result-resp_metadata.json"),
             llm_result.response_metadata,
         )
 
-        set_debug(False)
+        write_json_file(
+            os.path.join(output_run_task_dir, "llm_result-usage_metadata.json"),
+            llm_result.usage_metadata,
+        )
 
-        print("LLM Result:")
-        print("-" * 80)
-        print(llm_result)
-        print("-" * 80)
+        set_debug(False)
 
         self.plugin.notify_status_update(
             key=self.task_key,
@@ -186,14 +166,6 @@ def llm_runner_task(
     debug: bool = False,
     dry_run: bool = False,
 ):
-    # print("[DEBUG] Running LLM runner task...")
-    # print(f"[DEBUG] Task key: {task_key}")
-    # print(f"[DEBUG] Output folder: {output_folder}")
-    # print(f"[DEBUG] Project: {project}")
-    # print(f"[DEBUG] Prompt: {prompt}")
-    # print(f"[DEBUG] Debug mode: {debug}")
-    # print(f"[DEBUG] Dry run mode: {dry_run}")
-
     task = RunnerPluginTask(
         task_key=task_key,
         project=project,
