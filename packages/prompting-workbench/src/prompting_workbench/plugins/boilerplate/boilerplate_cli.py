@@ -15,7 +15,40 @@ plugin: BoilerplateCliPlugin  # noqa: F821  # Injected by CLI engine at runtime
 console = Console()
 
 
-@typer_app.command("create-project")
+@typer_app.command("wb-list-templates")
+def list_templates():
+    """
+    List available templates and examples.
+    """
+    console.print()
+    console.rule("[bold cyan]Available Templates[/bold cyan]")
+    console.print()
+
+    table = Table(show_header=True, header_style="bold magenta")
+    table.add_column("Type", style="cyan")
+    table.add_column("Description", style="white")
+    table.add_column("Example", style="yellow")
+
+    table.add_row(
+        "Project", "Basic project structure", "boilerplate create-project my_project"
+    )
+    table.add_row(
+        "Prompt",
+        "Basic prompt with system/user templates",
+        "boilerplate create-prompt my_project 01-01 my_prompt",
+    )
+
+    console.print(table)
+    console.print()
+
+    console.print("[bold cyan]LLM Providers:[/bold cyan]")
+    console.print("  • openai    - OpenAI models (gpt-4, gpt-4o-mini, etc.)")
+    console.print("  • anthropic - Anthropic models (claude-3-opus, etc.)")
+    console.print("  • ollama    - Local models via Ollama")
+    console.print()
+
+
+@typer_app.command("wb-create-project")
 def create_project(
     ctx: typer.Context,
     name: Annotated[str, typer.Argument(help="Project name")],
@@ -66,7 +99,7 @@ def create_project(
         raise typer.Exit(code=1)
 
 
-@typer_app.command("create-prompt")
+@typer_app.command("wb-create-prompt")
 def create_prompt(
     ctx: typer.Context,
     prompt_id: Annotated[
@@ -182,36 +215,3 @@ def create_prompt(
         plugin.notify_status_update(key="create-prompt", status="error", text=str(e))
         console.print(f"[red]✗ Error:[/red] {e}")
         raise typer.Exit(code=1)
-
-
-@typer_app.command("list")
-def list_templates():
-    """
-    List available templates and examples.
-    """
-    console.print()
-    console.rule("[bold cyan]Available Templates[/bold cyan]")
-    console.print()
-
-    table = Table(show_header=True, header_style="bold magenta")
-    table.add_column("Type", style="cyan")
-    table.add_column("Description", style="white")
-    table.add_column("Example", style="yellow")
-
-    table.add_row(
-        "Project", "Basic project structure", "boilerplate create-project my_project"
-    )
-    table.add_row(
-        "Prompt",
-        "Basic prompt with system/user templates",
-        "boilerplate create-prompt my_project 01-01 my_prompt",
-    )
-
-    console.print(table)
-    console.print()
-
-    console.print("[bold cyan]LLM Providers:[/bold cyan]")
-    console.print("  • openai    - OpenAI models (gpt-4, gpt-4o-mini, etc.)")
-    console.print("  • anthropic - Anthropic models (claude-3-opus, etc.)")
-    console.print("  • ollama    - Local models via Ollama")
-    console.print()
