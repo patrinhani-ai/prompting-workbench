@@ -1,10 +1,10 @@
 import os
 
 from prompting_workbench.cli_engine_types import ICliEngine
-from prompting_workbench.config import settings
+from prompting_workbench.settings import settings
 
 from prompting_workbench.domains.project import Project
-from prompting_workbench.wrkbnch_context import WrkbnchContext
+from prompting_workbench.domains.wrkbnch_context import WrkbnchContext
 
 from prompting_workbench.plugins._base_cli_plugin import BaseCliPlugin
 
@@ -16,13 +16,17 @@ from prompting_workbench.plugins._base_cli_plugin import BaseCliPlugin
 
 class CliEngine(ICliEngine):
     plugins: dict[str, BaseCliPlugin]
-    context: WrkbnchContext
 
-    project: Project
+    @property
+    def project(self) -> Project | None:
+        return self.context.project
+
+    @property
+    def context(self) -> WrkbnchContext:
+        return WrkbnchContext.instance()
 
     def __init__(self):
         self.plugins: dict[str, BaseCliPlugin] = {}
-        self.context = WrkbnchContext()
 
     def _load_plugin(
         self,
@@ -47,13 +51,6 @@ class CliEngine(ICliEngine):
         self._load_plugin(RunnerCliPlugin())
         self._load_plugin(BoilerplateCliPlugin())
 
-    def _load_project(self, project_id: str):
-        if project_id == "NONE":
-            project_id = ""
-
-        self.project = Project.load(project_id)
-        self.context.project = self.project
-
     def _check_settings(self):
         if not settings.projects_dir:
             raise ValueError(
@@ -74,24 +71,5 @@ class CliEngine(ICliEngine):
         self._load_plugins()
 
     def start(self, project: str, prompts: list[str]):
-        # print("[DEBUG] Starting CLI Engine...")
-
-        # print(f"[DEBUG] Project: {project}")
-
-        # Skip loading project for NONE/empty project (used by boilerplate commands)
-        if project and project != "NONE":
-            self._load_project(project)
-            self.project.load_prompts(list(set(prompts)))
-        else:
-            # For NONE projects, just set an empty context
-            self.context.project = None
-
-        # arg__command = args.command or "default"
-
-        # if arg__command != "default" and arg__command in self.plugins:
-        #     plugin: BaseCliPlugin = self.plugins.get(arg__command)
-
-        #     plugin.prepare()
-        #     # return
-
-        #     plugin.run()
+        self.context.args__project = project
+        self.context.args__prompts = prompts

@@ -3,20 +3,23 @@ from prompting_workbench.domains.prompt import Prompt
 from prompting_workbench.domains.repositories._core.meta_config_repository_base import (
     MetaConfigRepositoryBase,
 )
+from prompting_workbench.domains.wrkbnch_context import WrkbnchContext
 from prompting_workbench.plugins._base_cli_plugin import BaseCliPlugin
 from prompting_workbench.plugins.runner.domains.models.execution_plan import (
     RunnerExecutionPlan,
 )
 from prompting_workbench.plugins.runner.domains.runner_task import llm_runner_task
-from prompting_workbench.wrkbnch_context import WrkbnchContext
 
 
 class RunnerPluginController:
     output_folder: str
     plugin: BaseCliPlugin
     project: Project
-    context: WrkbnchContext
     meta_config_repository: MetaConfigRepositoryBase
+
+    @property
+    def context(self) -> WrkbnchContext:
+        return WrkbnchContext.instance()
 
     @property
     def output_target_path(self):
@@ -26,13 +29,11 @@ class RunnerPluginController:
         self,
         plugin: BaseCliPlugin,
         project: Project,
-        context: WrkbnchContext,
         meta_config_repository: MetaConfigRepositoryBase,
         output_folder: str = "output",
     ):
         self.plugin = plugin
         self.project = project
-        self.context = context
         self.output_folder = output_folder
         self.meta_config_repository = meta_config_repository
 

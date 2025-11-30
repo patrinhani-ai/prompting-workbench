@@ -3,7 +3,7 @@ from typing_extensions import Annotated
 from rich.console import Console
 from rich.table import Table
 
-from prompting_workbench.config import settings
+from prompting_workbench.settings import settings
 from prompting_workbench.plugins.boilerplate.boilerplate import BoilerplateCliPlugin
 from prompting_workbench.plugins.boilerplate.domains.boilerplate_generator import (
     BoilerplateGenerator,

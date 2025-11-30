@@ -7,13 +7,12 @@ from prompting_workbench.domains.repositories._core.meta_config_fs_repository im
 from prompting_workbench.domains.repositories._core.meta_config_repository_base import (
     MetaConfigRepositoryBase,
 )
-from prompting_workbench.wrkbnch_context import WrkbnchContext
+from prompting_workbench.domains.wrkbnch_context import WrkbnchContext
 
 from blinker import signal
 
 
 class BaseCliPlugin:
-    context: WrkbnchContext
     meta_config_repository: MetaConfigRepositoryBase
 
     on_status_update = signal("on_status_update")
@@ -26,6 +25,10 @@ class BaseCliPlugin:
 
     def notify_status_update(self, key: str, status: str = "", text: str = ""):
         self.on_status_update.send(self, key=key, status=status, text=text)
+
+    @property
+    def context(self) -> WrkbnchContext:
+        return WrkbnchContext.instance()
 
     @property
     def project(self) -> Project | None:
@@ -51,13 +54,9 @@ class BaseCliPlugin:
 
     def __init__(self):
         super().__init__()
-        self.context = WrkbnchContext()
         self.meta_config_repository = MetaConfigFileSystemRepository(
             plugin_instance=self
         )
-
-    def set_context(self, **kargs):
-        self.context = WrkbnchContext(**kargs)
 
     @abstractmethod
     def get_plugin_name(self):
@@ -80,7 +79,7 @@ class BaseCliPlugin:
 
     @abstractmethod
     def prepare(self, *args, **kwargs):
-        self.set_context(**kwargs.get("context", {}))
+        self.context.update_data(**kwargs.get("context", {}))
 
     @abstractmethod
     def run(self):

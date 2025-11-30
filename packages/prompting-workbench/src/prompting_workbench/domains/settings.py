@@ -10,6 +10,3 @@ class PromptWorkbenchSettings(BaseSettings):
     )
 
     projects_dir: str = "./wrkbnch_space"
-
-
-settings = PromptWorkbenchSettings()

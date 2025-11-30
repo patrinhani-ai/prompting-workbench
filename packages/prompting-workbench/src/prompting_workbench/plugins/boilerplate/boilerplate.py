@@ -19,8 +19,5 @@ class BoilerplateCliPlugin(BaseCliPlugin):
     def get_plugin_file_path(self):
         return __file__
 
-    def prepare(self, *args, **kwargs):
-        self.set_context(**kwargs.get("context", {}))
-
     def run(self):
         pass

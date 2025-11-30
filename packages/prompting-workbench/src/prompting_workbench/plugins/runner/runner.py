@@ -45,13 +45,16 @@ class RunnerCliPlugin(BaseCliPlugin):
         super().prepare(context=context)
 
         if not self.project:
-            print(f"[ERROR][{self.get_plugin_name()}] No project found.")
-            return
+            self.context.load_project()
+
+        if not self.project:
+            raise ValueError(
+                f"[{self.get_plugin_name()}] No project loaded in context."
+            )
 
         self.runner_controller = RunnerPluginController(
             plugin=self,
             project=self.project,
-            context=self.context,
             output_folder=output_folder,
             meta_config_repository=self.meta_config_repository,
         )
