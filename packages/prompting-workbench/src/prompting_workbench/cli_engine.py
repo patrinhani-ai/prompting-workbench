@@ -47,9 +47,13 @@ class CliEngine(ICliEngine):
         from prompting_workbench.plugins.boilerplate.boilerplate import (
             BoilerplateCliPlugin,
         )
+        from prompting_workbench.plugins.config.config import (
+            ConfigCliPlugin,
+        )
 
         self._load_plugin(RunnerCliPlugin())
         self._load_plugin(BoilerplateCliPlugin())
+        self._load_plugin(ConfigCliPlugin())
 
     def _check_settings(self):
         if not settings.projects_dir:
