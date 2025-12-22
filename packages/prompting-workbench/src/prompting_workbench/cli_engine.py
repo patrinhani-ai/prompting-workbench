@@ -51,9 +51,9 @@ class CliEngine(ICliEngine):
             ConfigCliPlugin,
         )
 
+        self._load_plugin(ConfigCliPlugin())
         self._load_plugin(RunnerCliPlugin())
         self._load_plugin(BoilerplateCliPlugin())
-        self._load_plugin(ConfigCliPlugin())
 
     def _check_settings(self):
         if not settings.projects_dir:

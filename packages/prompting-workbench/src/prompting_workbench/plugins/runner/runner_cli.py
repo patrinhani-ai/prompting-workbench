@@ -24,6 +24,7 @@ def runner(
         ),
     ] = "output",
 ):
+    """Run prompts using jinjatemplate based on pre-defined configuration"""
     global plugin
 
     context: dict = dict(ctx.obj or {})
