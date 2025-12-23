@@ -34,24 +34,6 @@ class BaseCliPlugin:
     def project(self) -> Project | None:
         return self.context.project
 
-    # output_folder: str
-
-    # @property
-    # def arg__debug(self):
-    #     return self.cli_args.debug
-
-    # @property
-    # def arg__dry_run(self):
-    #     return self.cli_args.dry_run
-
-    # @property
-    # def arg__project_prompts(self):
-    #     return self.cli_args.prompts or []
-
-    # @property
-    # def output_target_path(self):
-    #     return self.context.get("target_project_dir", self.output_folder)
-
     def __init__(self):
         super().__init__()
         self.meta_config_repository = MetaConfigFileSystemRepository(

@@ -2,9 +2,9 @@ import os
 from typing import Dict, Optional
 
 
-class BoilerplateGenerator:
+class ScaffoldingGenerator:
     """
-    Handles generation of boilerplate structures for projects and prompts.
+    Handles generation of scaffolding structures for projects and prompts.
     """
 
     def __init__(self, projects_dir: str):
@@ -15,6 +15,7 @@ class BoilerplateGenerator:
         Validate prompt ID format (NN-NN).
         """
         import re
+
         pattern = r"^[0-9]{2}-[0-9]{2}$"
         return bool(re.match(pattern, prompt_id))
 
@@ -26,27 +27,33 @@ class BoilerplateGenerator:
         if not project_name:
             # Single workspace mode - prompts go directly in projects_dir/prompts/
             return True
-        
+
         project_path = os.path.join(self.projects_dir, project_name)
         return os.path.isdir(project_path)
 
-    def prompt_exists(self, project_name: str, prompt_id: str, prompt_name: str) -> bool:
+    def prompt_exists(
+        self, project_name: str, prompt_id: str, prompt_name: str
+    ) -> bool:
         """
         Check if a prompt already exists.
         """
         if not project_name:
             # Single workspace mode
-            prompt_dir = os.path.join(self.projects_dir, "prompts", f"{prompt_id}--{prompt_name}")
+            prompt_dir = os.path.join(
+                self.projects_dir, "prompts", f"{prompt_id}--{prompt_name}"
+            )
         else:
             prompt_dir = os.path.join(
                 self.projects_dir,
                 project_name,
                 "prompts",
-                f"{prompt_id}--{prompt_name}"
+                f"{prompt_id}--{prompt_name}",
             )
         return os.path.isdir(prompt_dir)
 
-    def create_project(self, project_name: str, description: str = "Project description") -> str:
+    def create_project(
+        self, project_name: str, description: str = "Project description"
+    ) -> str:
         """
         Create a new project with proper structure.
         Returns the path to the created project.
@@ -63,14 +70,11 @@ class BoilerplateGenerator:
             "name": project_name,
             "description": description,
             "version": "0.1.0",
-            "defaults": {
-                "prompt": {}
-            }
+            "defaults": {"prompt": {}},
         }
 
         self._write_json(
-            os.path.join(project_path, ".config", "meta_info.json"),
-            meta_info
+            os.path.join(project_path, ".config", "meta_info.json"), meta_info
         )
 
         readme_content = f"""# {project_name}
@@ -87,10 +91,10 @@ This project contains the following prompts:
 
 ```bash
 # Run all prompts in this project
-prompting_workbench --project {project_name}
+prompting_workbench --project {project_name} runner
 
 # Run specific prompt
-prompting_workbench --project {project_name} -P <prompt_id>
+prompting_workbench --project {project_name} -P <prompt_id> runner
 ```
 
 ## Configuration
@@ -111,12 +115,12 @@ prompting_workbench --project {project_name} -P <prompt_id>
         system_prompt: Optional[str] = None,
         user_prompt: Optional[str] = None,
         llm_provider: str = "openai",
-        llm_model: str = "gpt-4o-mini"
+        llm_model: str = "gpt-4o-mini",
     ) -> str:
         """
         Create a new prompt with proper structure.
         Returns the path to the created prompt.
-        
+
         If project_name is empty, creates prompt in single workspace mode
         (directly under projects_dir/prompts/).
         """
@@ -132,47 +136,54 @@ prompting_workbench --project {project_name} -P <prompt_id>
         # Determine prompt directory based on workspace mode
         if not project_name:
             # Single workspace mode - prompts go directly under projects_dir/prompts/
-            prompt_dir = os.path.join(self.projects_dir, "prompts", f"{prompt_id}--{prompt_name}")
+            prompt_dir = os.path.join(
+                self.projects_dir, "prompts", f"{prompt_id}--{prompt_name}"
+            )
         else:
             # Multi-project mode
             prompt_dir = os.path.join(
                 self.projects_dir,
                 project_name,
                 "prompts",
-                f"{prompt_id}--{prompt_name}"
+                f"{prompt_id}--{prompt_name}",
             )
 
         os.makedirs(os.path.join(prompt_dir, "prompt_inputs", "default"), exist_ok=True)
         os.makedirs(os.path.join(prompt_dir, "system_inputs", "default"), exist_ok=True)
-        os.makedirs(os.path.join(prompt_dir, "eval"), exist_ok=True)
         os.makedirs(os.path.join(prompt_dir, ".config", "runner"), exist_ok=True)
 
-        system_prompt_content = system_prompt or """You are a helpful AI assistant.
+        system_prompt_content = (
+            system_prompt
+            or """You are a helpful AI assistant.
 
 {{ system_instructions }}"""
+        )
 
-        user_prompt_content = user_prompt or """{{ user_input }}
+        user_prompt_content = (
+            user_prompt
+            or """{{ user_input }}
 
 Please provide a detailed and helpful response."""
-
-        self._write_file(
-            os.path.join(prompt_dir, "llm_system.jinja2"),
-            system_prompt_content
         )
 
         self._write_file(
-            os.path.join(prompt_dir, "user_prompt.jinja2"),
-            user_prompt_content
+            os.path.join(prompt_dir, "llm_system.jinja2"), system_prompt_content
+        )
+
+        self._write_file(
+            os.path.join(prompt_dir, "user_prompt.jinja2"), user_prompt_content
         )
 
         self._write_file(
             os.path.join(prompt_dir, "prompt_inputs", "default", "user_input.md"),
-            "Write your user input here.\n\nYou can use multiple lines and markdown formatting.\n"
+            "Write your user input here.\n\nYou can use multiple lines and markdown formatting.\n",
         )
 
         self._write_file(
-            os.path.join(prompt_dir, "system_inputs", "default", "system_instructions.md"),
-            "Follow these guidelines:\n- Be helpful and accurate\n- Provide clear explanations\n- Use examples when appropriate\n"
+            os.path.join(
+                prompt_dir, "system_inputs", "default", "system_instructions.md"
+            ),
+            "Follow these guidelines:\n- Be helpful and accurate\n- Provide clear explanations\n- Use examples when appropriate\n",
         )
 
         meta_info = {
@@ -183,56 +194,20 @@ Please provide a detailed and helpful response."""
             "prompt": '<file src="user_prompt.jinja2"/>',
             "prompt_input": {
                 "user_input": '<file src="prompt_inputs/default/user_input.md"/>'
-            }
+            },
         }
 
         self._write_json(
-            os.path.join(prompt_dir, ".config", "meta_info.json"),
-            meta_info
+            os.path.join(prompt_dir, ".config", "meta_info.json"), meta_info
         )
 
         execution_plan = {
-            "llm_providers": [
-                {
-                    "provider": llm_provider,
-                    "model": llm_model
-                }
-            ]
+            "llm_providers": [{"provider": llm_provider, "model": llm_model}]
         }
 
         self._write_json(
             os.path.join(prompt_dir, ".config", "runner", "execution_plan.json"),
-            execution_plan
-        )
-
-        test_config = {
-            "enabled": True,
-            "scenarios": [
-                "scenario-001-basic.test.md"
-            ]
-        }
-
-        self._write_json(
-            os.path.join(prompt_dir, "eval", "test_config.json"),
-            test_config
-        )
-
-        test_scenario = """# Test Scenario: Basic Functionality
-
-## Expected Behavior
-- Should respond appropriately to user input
-- Should follow system instructions
-- Should maintain helpful and professional tone
-
-## Test Cases
-1. Basic greeting
-2. Complex question
-3. Request for clarification
-"""
-
-        self._write_file(
-            os.path.join(prompt_dir, "eval", "scenario-001-basic.test.md"),
-            test_scenario
+            execution_plan,
         )
 
         return prompt_dir
@@ -245,5 +220,6 @@ Please provide a detailed and helpful response."""
     def _write_json(self, file_path: str, data: Dict):
         """Write JSON data to a file."""
         import json
+
         with open(file_path, "w") as f:
             json.dump(data, f, indent=4)

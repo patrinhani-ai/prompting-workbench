@@ -40,20 +40,19 @@ class CliEngine(ICliEngine):
         self.plugins[plugin_name] = plugin
 
     def _load_plugins(self):
-        # pass
         from prompting_workbench.plugins.runner.runner import (
             RunnerCliPlugin,
         )
-        from prompting_workbench.plugins.boilerplate.boilerplate import (
-            BoilerplateCliPlugin,
+        from prompting_workbench.plugins.scaffolding.scaffolding import (
+            ScaffoldingCliPlugin,
         )
         from prompting_workbench.plugins.config.config import (
             ConfigCliPlugin,
         )
 
         self._load_plugin(ConfigCliPlugin())
+        self._load_plugin(ScaffoldingCliPlugin())
         self._load_plugin(RunnerCliPlugin())
-        self._load_plugin(BoilerplateCliPlugin())
 
     def _check_settings(self):
         if not settings.projects_dir:

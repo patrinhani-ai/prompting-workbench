@@ -8,4 +8,8 @@ class ProjectModel(ModelBase):
 
     id: str
 
+    name: str = ""
+    description: str = ""
+    version: str = "0.1.0"
+
     defaults: dict = {}

@@ -68,15 +68,15 @@ def print_plugin_status(plugin: BaseCliPlugin, key: str, status: str, text: str)
         f"\[[magenta]{plugin.get_plugin_name()}[/magenta]]" if plugin else ""
     )
 
-    str_key = f"\[[royal_blue1]{key}[/royal_blue1]]" if key else ""
+    str_key = f"\[[royal_blue1]{key}[/royal_blue1]] " if key else ""
 
     str_status = ""
     if status == "running":
-        str_status = f"\[[yellow]{status}[/yellow]]"
+        str_status = f"\[[yellow]{status}[/yellow]] "
     elif status == "done":
-        str_status = f"\[[green]{status}[/green]]"
+        str_status = f"\[[green]{status}[/green]] "
 
-    console.print(f"[{event_time}]{str_plugin_name}{str_key}{str_status} {text}")
+    console.print(f"{event_time} - {str_plugin_name} {str_key}{str_status}: {text}")
 
 
 def _load_plugins_cli():
