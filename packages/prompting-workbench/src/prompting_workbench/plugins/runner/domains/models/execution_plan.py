@@ -1,4 +1,5 @@
 from typing import Optional
+
 from prompting_workbench.core.models.model_base import ModelBase
 
 """

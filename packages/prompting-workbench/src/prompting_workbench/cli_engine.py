@@ -2,17 +2,10 @@ import logging
 import os
 
 from prompting_workbench.cli_engine_types import ICliEngine
-from prompting_workbench.settings import settings
-
 from prompting_workbench.domains.project import Project
 from prompting_workbench.domains.wrkbnch_context import WrkbnchContext
-
 from prompting_workbench.plugins._base_cli_plugin import BaseCliPlugin
-
-# from prompting_workbench.plugins import FlowWebCliPlugin
-# from prompting_workbench.plugins.prompt_runner import (
-#     PromptRunnerCliPlugin,
-# )
+from prompting_workbench.settings import settings
 
 
 class CliEngine(ICliEngine):
@@ -41,14 +34,14 @@ class CliEngine(ICliEngine):
         self.plugins[plugin_name] = plugin
 
     def _load_plugins(self):
+        from prompting_workbench.plugins.config.config import (
+            ConfigCliPlugin,
+        )
         from prompting_workbench.plugins.runner.runner import (
             RunnerCliPlugin,
         )
         from prompting_workbench.plugins.scaffolding.scaffolding import (
             ScaffoldingCliPlugin,
-        )
-        from prompting_workbench.plugins.config.config import (
-            ConfigCliPlugin,
         )
 
         self._load_plugin(ConfigCliPlugin())

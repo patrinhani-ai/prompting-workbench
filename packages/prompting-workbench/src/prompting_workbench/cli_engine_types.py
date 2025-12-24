@@ -1,9 +1,8 @@
+from typing import List, Protocol, runtime_checkable
+
 from prompting_workbench.domains.project import Project
 from prompting_workbench.domains.wrkbnch_context import WrkbnchContext
-
 from prompting_workbench.plugins._base_cli_plugin import BaseCliPlugin
-
-from typing import Protocol, runtime_checkable, List
 
 
 @runtime_checkable

@@ -2,5 +2,4 @@ import logging
 
 from prompting_workbench._logging_config import PROMPTING_WORKBENCH_LOGGING_KEY
 
-
 root_logging = logging.getLogger(PROMPTING_WORKBENCH_LOGGING_KEY)

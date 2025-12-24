@@ -1,5 +1,7 @@
 from abc import abstractmethod
 
+from blinker import signal
+
 from prompting_workbench.domains.project import Project
 from prompting_workbench.domains.repositories._core.meta_config_fs_repository import (
     MetaConfigFileSystemRepository,
@@ -8,8 +10,6 @@ from prompting_workbench.domains.repositories._core.meta_config_repository_base 
     MetaConfigRepositoryBase,
 )
 from prompting_workbench.domains.wrkbnch_context import WrkbnchContext
-
-from blinker import signal
 
 
 class BaseCliPlugin:

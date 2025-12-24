@@ -7,7 +7,6 @@ from pydantic import ValidationInfo
 
 from .types import ContentStrRenderer, _render_param_walk_handler
 
-
 # def py_validator_str_advcd(value: str, info: ValidationInfo) -> Any:
 #     return _validator_str_advcd(value, info.field_name, info.context)
 

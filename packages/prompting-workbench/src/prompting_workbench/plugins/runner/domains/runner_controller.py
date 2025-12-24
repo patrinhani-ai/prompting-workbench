@@ -1,4 +1,5 @@
 import logging
+
 from prompting_workbench.core.utils.dict import deep_merge
 from prompting_workbench.domains.project import Project
 from prompting_workbench.domains.prompt import Prompt

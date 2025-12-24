@@ -1,8 +1,10 @@
 from typing import Annotated, Optional
+
+from pydantic import PlainSerializer, PlainValidator
+
+from prompting_workbench.core.models.model_base import ModelBase
 from prompting_workbench.core.models.types import ContentStrRenderer
 from prompting_workbench.core.models.validators import py_validator_content_str_renderer
-from pydantic import PlainSerializer, PlainValidator
-from prompting_workbench.core.models.model_base import ModelBase
 
 
 class PromptModel(ModelBase):

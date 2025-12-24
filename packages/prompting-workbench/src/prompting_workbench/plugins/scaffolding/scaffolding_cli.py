@@ -1,13 +1,13 @@
 import typer
-from typing_extensions import Annotated
 from rich.console import Console
 from rich.table import Table
+from typing_extensions import Annotated
 
-from prompting_workbench.settings import settings
-from prompting_workbench.plugins.scaffolding.scaffolding import ScaffoldingCliPlugin
 from prompting_workbench.plugins.scaffolding.domains.scaffolding_generator import (
     ScaffoldingGenerator,
 )
+from prompting_workbench.plugins.scaffolding.scaffolding import ScaffoldingCliPlugin
+from prompting_workbench.settings import settings
 
 typer_app = typer.Typer(help="Scaffold new projects and prompts")
 plugin: ScaffoldingCliPlugin  # noqa: F821  # Injected by CLI engine at runtime

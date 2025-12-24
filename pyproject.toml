@@ -23,7 +23,7 @@ dev = [
 
 [tool.ruff.lint]
 # Add "Q" to the list of enabled codes.
-select = ["E4", "E7", "E9", "F", "Q"]
+select = ["E4", "E7", "E9", "F", "Q", "I"]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["E402"]

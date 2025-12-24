@@ -1,4 +1,5 @@
 from abc import abstractmethod
+
 from prompting_workbench.core.repositories.repository_base import (
     RepositoryBase,
 )

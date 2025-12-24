@@ -1,5 +1,5 @@
-from prompting_workbench.settings import settings
 from prompting_workbench.core.repositories.repository_base import RepositoryBase
+from prompting_workbench.settings import settings
 
 
 class FileSystemRepositoryBase(RepositoryBase):
