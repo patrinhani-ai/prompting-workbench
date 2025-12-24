@@ -1,3 +1,5 @@
+import logging
+
 from .models.project import ProjectModel
 from .prompt import Prompt
 from .repositories.project_repository import ProjectRepository
@@ -34,7 +36,7 @@ class Project:
 
         self.data = self.repository.get_project(self.project_id)
 
-        # print(f"[DEBUG] Project loaded: {self.data.id}")
+        logging.debug(f"Project loaded: {self.data.id}")
 
     def load_prompts(self, prompt_ids: list[str] = []):
         """
@@ -55,9 +57,9 @@ class Project:
             )
             self.prompts.append(prompt)
 
-        # print(f"[DEBUG] Prompts loaded for project: {self.project_id}")
-        # for prompt in self.prompts:
-        #     print(f"[DEBUG] Prompt ID: {prompt.prompt_id}, Data: {prompt.data}")
+        logging.debug(f"Prompts loaded for project: {self.project_id}")
+        for prompt in self.prompts:
+            logging.debug(f"Prompt ID: {prompt.prompt_id}, Data: {prompt.data}")
 
     def get_prompt_by_id(self, prompt_id: str) -> Prompt | None:
         for prompt in self.prompts:

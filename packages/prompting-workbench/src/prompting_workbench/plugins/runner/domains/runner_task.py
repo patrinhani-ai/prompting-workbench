@@ -1,5 +1,6 @@
-from datetime import datetime
+import logging
 import os
+from datetime import datetime
 from prompting_workbench.core.utils.io import write_file, write_json_file
 from prompting_workbench.domains.project import Project
 from prompting_workbench.domains.prompt import Prompt
@@ -57,7 +58,7 @@ class RunnerPluginTask:
         )
 
         if self.debug:
-            print(f"[DEBUG] Output directory: {output_dir}")
+            logging.debug(f"Output directory: {output_dir}")
 
         if self.dry_run:
             print("[DRY RUN] Skipping output directory creation...")
@@ -75,7 +76,7 @@ class RunnerPluginTask:
 
         output_run_task_dir = self._prepare_output_dir()
 
-        print(f"Running LLM runner task... Output dir: {output_run_task_dir}")
+        logging.info(f"Running LLM runner task... Output dir: {output_run_task_dir}")
 
         prompt = self.prompt
         prompt_exec_plan = self.prompt_exec_plan

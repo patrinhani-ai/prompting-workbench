@@ -59,10 +59,6 @@ class RunnerCliPlugin(BaseCliPlugin):
             meta_config_repository=self.meta_config_repository,
         )
 
-        # print(
-        #     f"[DEBUG][{self.get_plugin_name()}] Prepared plugin with output folder: {self.output_folder}"
-        # )
-
     def run(self):
         self.runner_controller.run_parallel()
 

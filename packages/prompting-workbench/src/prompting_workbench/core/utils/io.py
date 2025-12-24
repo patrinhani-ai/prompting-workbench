@@ -17,7 +17,6 @@ def get_json_content(file_path):
 def write_file(file_path, content):
     with open(file_path, "w") as f:
         f.write(content)
-    # print(f'[DEBUG] Wrote "{file_path}" successfully!')
 
 
 def append_file(file_path, content):

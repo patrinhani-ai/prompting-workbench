@@ -1,3 +1,4 @@
+import logging
 import os
 
 from prompting_workbench.cli_engine_types import ICliEngine
@@ -65,10 +66,10 @@ class CliEngine(ICliEngine):
                 f"Projects directory '{settings.projects_dir}' does not exist."
             )
 
-        # print(f"[DEBUG] Projects directory: {settings.projects_dir}")
+        logging.debug(f"Projects directory: {settings.projects_dir}")
 
     def prepare(self):
-        # print("[DEBUG] Preparing CLI Engine...")
+        logging.debug("Preparing CLI Engine...")
         self._check_settings()
 
         self._load_plugins()

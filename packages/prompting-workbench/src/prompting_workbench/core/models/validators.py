@@ -1,5 +1,6 @@
 # import os
 # import re
+import logging
 from typing import Any
 
 # from prompting_workbench.core.utils.io import get_file_content
@@ -22,11 +23,11 @@ from .types import ContentStrRenderer, _render_param_walk_handler
 #         template_input = ctx.get(input_field_name, {})
 #         template_input = _input_field_dict_walk_handler(template_input, ctx)
 
-#     # print(f"[DEBUG] [py_validator_str_advcd] field_name: {field_name}")
-#     # print(f"[DEBUG] [py_validator_str_advcd] value: {value}")
-#     # print(f"[DEBUG] [py_validator_str_advcd] base_path: {base_path}")
-#     # print(
-#     #     f"[DEBUG] [py_validator_str_advcd] template_input ({input_field_name}): {template_input}"
+#     # logging.debug(f"[py_validator_str_advcd] field_name: {field_name}")
+#     # logging.debug(f"[py_validator_str_advcd] value: {value}")
+#     # logging.debug(f"[py_validator_str_advcd] base_path: {base_path}")
+#     # logging.debug(
+#     #     f"[py_validator_str_advcd] template_input ({input_field_name}): {template_input}"
 #     # )
 
 #     if not value.startswith("<file"):
@@ -89,13 +90,13 @@ def py_validator_content_str_renderer(value: str, info: ValidationInfo) -> Any:
 
     field_content_renderer.set_render_params(template_input)
 
-    # print("*".strip() * 80)
-    # print(f"[DEBUG] [py_validator_content_str_renderer] field_name: {field_name}")
+    # logging.debug("*" * 80)
+    # logging.debug(f"[py_validator_content_str_renderer] field_name: {field_name}")
 
-    # print(f"[DEBUG] [ContentStrRenderer] value: {field_content_renderer.lazy_value}")
-    # print(f"[DEBUG] [ContentStrRenderer] value_type: {field_content_renderer.value_type}")
-    # print(f"[DEBUG] [ContentStrRenderer] render_params: {field_content_renderer.render_params}")
+    # logging.debug(f"[ContentStrRenderer] value: {field_content_renderer.lazy_value}")
+    # logging.debug(f"[ContentStrRenderer] value_type: {field_content_renderer.value_type}")
+    # logging.debug(f"[ContentStrRenderer] render_params: {field_content_renderer.render_params}")
 
-    # print("*".strip() * 80)
+    # logging.debug("*" * 80)
 
     return field_content_renderer

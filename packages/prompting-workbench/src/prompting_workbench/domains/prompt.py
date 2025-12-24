@@ -1,3 +1,5 @@
+import logging
+
 from .models.prompt import PromptModel
 from .repositories.prompt_repository import PromptRepository
 
@@ -33,7 +35,7 @@ class Prompt:
             self.project_id, self.prompt_id, self.defaults
         )
 
-        # print(f"[DEBUG] Prompt loaded: {self.data.id}")
+        logging.debug(f"Prompt loaded: {self.data.id}")
 
     @staticmethod
     def load(project_id: str, prompt_id: str, defaults: dict = {}):

@@ -1,3 +1,5 @@
+import logging
+from prompting_workbench.core.utils.dict import deep_merge
 from prompting_workbench.domains.project import Project
 from prompting_workbench.domains.prompt import Prompt
 from prompting_workbench.domains.repositories._core.meta_config_repository_base import (
@@ -59,8 +61,7 @@ class RunnerPluginController:
 
         merged_dict = {
             "id": prompt_exec_plan_dict.get("id", prompt.prompt_id),
-            **exec_plan_defaults,
-            **prompt_exec_plan_dict,
+            **deep_merge(exec_plan_defaults, prompt_exec_plan_dict),
         }
 
         return RunnerExecutionPlan.model_validate(merged_dict)
@@ -76,8 +77,8 @@ class RunnerPluginController:
             arg_debug = self.context.debug
             arg_dry_run = self.context.dry_run
 
-            print(
-                f"[DEBUG][] Starting parallel execution for project {project.project_id} with debug={arg_debug} and dry_run={arg_dry_run}"
+            logging.debug(
+                f"Starting parallel execution for project {project.project_id} with debug={arg_debug} and dry_run={arg_dry_run}"
             )
 
             task_idx = 0

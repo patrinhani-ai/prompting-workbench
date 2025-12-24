@@ -1,13 +1,18 @@
 import datetime
+import logging
 import os
 import sys
 import dotenv
-from prompting_workbench.plugins._base_cli_plugin import BaseCliPlugin
 import typer
 from rich.console import Console
 
 from typing import List
+from prompting_workbench.plugins._base_cli_plugin import BaseCliPlugin
 from prompting_workbench.cli_engine_types import ICliEngine
+from prompting_workbench._logging_config import (
+    PROMPTING_WORKBENCH_LOGGING_DEFAULT_LEVEL,
+    PROMPTING_WORKBENCH_LOGGING_KEY,
+)
 
 from typing_extensions import Annotated
 
@@ -153,11 +158,18 @@ def typer_callback(
         ),
     ] = False,
 ):
-    # print(f"[DEBUG] Project: {project}")
-    # print(f"[DEBUG] Prompts: {prompts}")
-    # print(f"[DEBUG] Debug: {debug}")
-    # print(f"[DEBUG] Dry Run: {dry_run}")
-    # print(f"[DEBUG] Context: {ctx}")
+    logging.debug(f"Project: {project}")
+    logging.debug(f"Prompts: {prompts}")
+    logging.debug(f"Debug: {debug}")
+    logging.debug(f"Dry Run: {dry_run}")
+    logging.debug(f"Context: {ctx}")
+
+    logging.getLogger(PROMPTING_WORKBENCH_LOGGING_KEY).setLevel(
+        PROMPTING_WORKBENCH_LOGGING_DEFAULT_LEVEL
+    )
+
+    if debug:
+        logging.getLogger(PROMPTING_WORKBENCH_LOGGING_KEY).setLevel(logging.DEBUG)  # type: ignore
 
     console.rule("[ [bold cyan]Prompt Workbench[/bold cyan] ]")
     console.print()
