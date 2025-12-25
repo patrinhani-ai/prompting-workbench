@@ -28,6 +28,7 @@ from prompting_workbench.core.models.model_base import ModelBase
 
 
 class RunnerExecutionPlanTask(ModelBase):
+    id: Optional[str] = None
     llm_provider: Optional[str] = None
     llm_model: Optional[str] = None
     temperature: Optional[float] = None

@@ -123,10 +123,6 @@ class RunnerPluginTask:
 
         llm_chain = prompt_template | llm_model
 
-        from langchain_core.globals import set_debug
-
-        set_debug(self.debug)
-
         llm_result = llm_chain.invoke(
             input={},
             config=RunnableConfig(
@@ -148,8 +144,6 @@ class RunnerPluginTask:
             os.path.join(output_run_task_dir, "llm_result-usage_metadata.json"),
             llm_result.usage_metadata,
         )
-
-        set_debug(False)
 
         self.plugin.notify_status_update(
             key=self.task_key,

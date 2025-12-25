@@ -25,8 +25,8 @@
   "peacock.color": "#1857a4",
   "ruff.enable": true,
   "[python]": {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "charliermarsh.ruff"
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true
   },
   "[json]": {
     "editor.quickSuggestions": {
@@ -34,5 +34,14 @@
     },
     "editor.suggest.insertMode": "replace"
   },
-  "makefile.configureOnOpen": false
+  "makefile.configureOnOpen": false,
+  "logViewer.watch": [
+    {
+      "title": "App",
+      "pattern": "*.log"
+    }
+  ],
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  }
 }

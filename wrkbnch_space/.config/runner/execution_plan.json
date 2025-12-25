@@ -7,6 +7,7 @@
     "root_default_system_param_static_01": "value--root_default_system_param_static_01"
   },
   "prompt_input": {
+    "context_text": "<file src=\"prompt_inputs/default/dev--context_text.md\"/>",
     "root_default_prompt_param_static_01": "value--root_default_prompt_param_static_01"
   },
   "tasks": [

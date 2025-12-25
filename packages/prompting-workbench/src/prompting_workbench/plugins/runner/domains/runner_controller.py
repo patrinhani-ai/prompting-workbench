@@ -85,23 +85,40 @@ class RunnerPluginController:
             task_idx = 0
             for prompt in project.prompts:
                 prompt_id = prompt.prompt_id
-                task_key = f"{prompt_id}-task_{task_idx}"
                 prompt_exec_plan = self._load_prompt_execution_plan(prompt)
-
-                futures.append(
-                    executor.submit(
-                        llm_runner_task,
-                        task_key,
-                        project,
-                        prompt,
-                        prompt_exec_plan,
-                        self.output_folder,
-                        self.plugin,
-                        arg_debug,
-                        arg_dry_run,
-                    )
+                prompt_exec_plan_dict = prompt_exec_plan.model_dump(
+                    exclude=["tasks"], exclude_defaults=True
                 )
-                task_idx += 1
+
+                for exec_plan_task in prompt_exec_plan.tasks:
+                    exec_plan_task_dict = exec_plan_task.model_dump(
+                        exclude=["tasks"], exclude_defaults=True
+                    )
+
+                    task_exec_plan_details_dict = deep_merge(
+                        prompt_exec_plan_dict, exec_plan_task_dict
+                    )
+
+                    task_exec_plan_details = RunnerExecutionPlan.model_validate(
+                        task_exec_plan_details_dict
+                    )
+
+                    task_key = f"{prompt_id}-task_{task_idx}"
+
+                    futures.append(
+                        executor.submit(
+                            llm_runner_task,
+                            task_key,
+                            project,
+                            prompt,
+                            task_exec_plan_details,
+                            self.output_folder,
+                            self.plugin,
+                            arg_debug,
+                            arg_dry_run,
+                        )
+                    )
+                    task_idx += 1
 
             for future in concurrent.futures.as_completed(futures):
                 future.result()

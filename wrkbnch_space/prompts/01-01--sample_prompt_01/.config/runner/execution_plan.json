@@ -4,5 +4,16 @@
   "prompt_input": {
     "root_default_prompt_param_static_01": "value--root_default_prompt_param_static_01.01"
   },
-  "attachments": []
+  "attachments": [],
+  "tasks": [
+    {
+      "llm_provider": "ollama"
+    },
+    {
+      "llm_provider": "ollama",
+      "prompt_input": {
+        "context_text": "Test context override for task 2."
+      }
+    }
+  ]
 }

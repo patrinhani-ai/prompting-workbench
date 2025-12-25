@@ -169,7 +169,7 @@ def typer_callback(
     )
 
     if debug:
-        logging.getLogger(PROMPTING_WORKBENCH_LOGGING_KEY).setLevel(logging.DEBUG)  # type: ignore
+        logging.getLogger(PROMPTING_WORKBENCH_LOGGING_KEY).setLevel(logging.DEBUG)
 
     console.rule("[ [bold cyan]Prompt Workbench[/bold cyan] ]")
     console.print()
