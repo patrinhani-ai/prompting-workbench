@@ -65,3 +65,17 @@ clean:
 	find . -type f -name "*.pyc" -delete
 	find . -type d -name "__pycache__" -exec rm -rf {} +
 	rm -rf .venv .pytest_cache .ruff_cache dist build *.egg-info
+
+clean-manual-test:
+	@echo "--- Cleaning up before manual simple test ---"
+	rm -fr output
+
+# Manual Simple test Current Version
+run-manual-test:
+	@echo " --- Cleaning before manual simple test --- "
+	$(MAKE) clean-manual-test
+
+	@echo "--- Running manual simple test: [uv run prompting_workbench --debug runner] ---"
+
+	uv run prompting_workbench --debug runner
+# End of Makefile

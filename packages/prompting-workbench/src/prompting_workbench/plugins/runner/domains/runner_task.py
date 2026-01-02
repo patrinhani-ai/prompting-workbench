@@ -2,11 +2,11 @@ import logging
 import os
 from datetime import datetime
 
-from langchain.chat_models import init_chat_model
-from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.runnables.config import RunnableConfig
-
+from prompting_workbench.core.llm.llm_chat import (
+    LLMChatModelParams,
+    LLMRunConfig,
+    llm_chat_invoke,
+)
 from prompting_workbench.core.utils.io import write_file, write_json_file
 from prompting_workbench.domains.project import Project
 from prompting_workbench.domains.prompt import Prompt
@@ -68,6 +68,22 @@ class RunnerPluginTask:
         os.makedirs(output_dir, exist_ok=True)
         return output_dir
 
+    def _output_write_llm_result(self, output_run_task_dir: str, llm_result):
+        write_file(
+            os.path.join(output_run_task_dir, "llm_result-content.md"),
+            str(llm_result.content),
+        )
+
+        write_json_file(
+            os.path.join(output_run_task_dir, "llm_result-resp_metadata.json"),
+            llm_result.response_metadata,
+        )
+
+        write_json_file(
+            os.path.join(output_run_task_dir, "llm_result-usage_metadata.json"),
+            llm_result.usage_metadata,
+        )
+
     def run(self):
         self.plugin.notify_status_update(
             key=self.task_key,
@@ -87,12 +103,12 @@ class RunnerPluginTask:
             **(prompt_exec_plan.system_input or {}),
         }
 
-        system_msg = SystemMessage(prompt.data.system.render(system_input))
+        system_msg_text = prompt.data.system.render(system_input)
 
         if self.debug:
             write_file(
                 os.path.join(output_run_task_dir, "system_message.debug.md"),
-                system_msg.content,
+                system_msg_text,
             )
 
         prompt_input = {
@@ -100,50 +116,28 @@ class RunnerPluginTask:
             **(prompt_exec_plan.prompt_input or {}),
         }
 
-        human_msg = HumanMessage(prompt.data.prompt.render(prompt_input))
+        human_msg_text = prompt.data.prompt.render(prompt_input)
 
         if self.debug:
             write_file(
                 os.path.join(output_run_task_dir, "human_message.debug.md"),
-                human_msg.content,
+                human_msg_text,
             )
 
-        prompt_template = ChatPromptTemplate(
-            messages=[
-                system_msg,
-                human_msg,
-            ]
-        )
-
-        llm_model = init_chat_model(
-            model_provider=prompt_exec_plan.llm_provider,
-            model=prompt_exec_plan.llm_model,
-            temperature=prompt_exec_plan.temperature,
-        )
-
-        llm_chain = prompt_template | llm_model
-
-        llm_result = llm_chain.invoke(
-            input={},
-            config=RunnableConfig(
+        llm_result = llm_chat_invoke(
+            system_msg_text=system_msg_text,
+            human_msg_text=human_msg_text,
+            model_params=LLMChatModelParams(
+                llm_provider=prompt_exec_plan.llm_provider,
+                llm_model=prompt_exec_plan.llm_model,
+                temperature=prompt_exec_plan.temperature,
+            ),
+            run_config=LLMRunConfig(
                 run_name=f"runner_task--{self.task_key}",
             ),
         )
 
-        write_file(
-            os.path.join(output_run_task_dir, "llm_result-content.md"),
-            str(llm_result.content),
-        )
-
-        write_json_file(
-            os.path.join(output_run_task_dir, "llm_result-resp_metadata.json"),
-            llm_result.response_metadata,
-        )
-
-        write_json_file(
-            os.path.join(output_run_task_dir, "llm_result-usage_metadata.json"),
-            llm_result.usage_metadata,
-        )
+        self._output_write_llm_result(output_run_task_dir, llm_result)
 
         self.plugin.notify_status_update(
             key=self.task_key,
