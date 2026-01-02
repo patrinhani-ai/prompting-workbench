@@ -1,0 +1,8 @@
+{
+  "test_title": "string",
+  "result": {
+    "passed": "bool"
+  },
+  "test_custom_output": {
+  }
+}

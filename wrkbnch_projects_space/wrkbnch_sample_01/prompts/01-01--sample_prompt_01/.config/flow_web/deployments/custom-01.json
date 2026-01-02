@@ -1,0 +1,7 @@
+{
+  "workbench": {},
+  "flow": {
+    // "domain": "com.cit.patrinhani.wrkbnch.agent:[{PROJECT_ID}].step:[{STEP_ID}].prompt:[{PROMPT_ID}].custom:[{CUSTOM_ID}]",
+    "name": "{AGENT_PREFIX}[SAMPLE][01][01.01][CUSTOM-01] Sample Prompt"
+  }
+}

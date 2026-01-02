@@ -1,5 +1,3 @@
 {
-  "recommendations": [
-    "johnpapa.vscode-peacock"
-  ]
+  "recommendations": ["johnpapa.vscode-peacock", "charliermarsh.ruff"]
 }

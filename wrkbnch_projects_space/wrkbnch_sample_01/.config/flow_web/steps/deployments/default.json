@@ -1,0 +1,18 @@
+{
+  "name": "[PATRINHANI-WRKBNCH][SAMPLE] Prompt Workbench Sample Steps - 01",
+  "description": "This Step is a sample prompt workbench.",
+  "columns": [
+    {
+      "name": "[STEP] Initial Step",
+      "description": "Initial Step.",
+      "templates": [
+        { "id": "67c69146 " }
+      ]
+    },
+    {
+      "name": "[STEP] Final Step",
+      "description": "Final Step.",
+      "templates": []
+    }
+  ]
+}

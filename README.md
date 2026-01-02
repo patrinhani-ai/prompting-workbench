@@ -56,13 +56,13 @@ prompting_workbench --help
 
 ## 🧠 Concepts
 
-| Concept | Description |
-|---------|-------------|
-| Project | A container grouping related prompts (e.g., a product feature, research line, or domain). |
-| Prompt  | A unit of execution containing a `llm_system.jinja2` + `user_prompt.jinja2` template, plus inputs. |
-| Scenario / Eval | Structured test cases for a prompt stored under its `eval/` folder. |
-| Plugin  | An extension that can add commands / behaviors to the core CLI. |
-| Workspace | The root directory where projects, prompts, and artifacts live. |
+| Concept         | Description                                                                                        |
+| --------------- | -------------------------------------------------------------------------------------------------- |
+| Project         | A container grouping related prompts (e.g., a product feature, research line, or domain).          |
+| Prompt          | A unit of execution containing a `llm_system.jinja2` + `user_prompt.jinja2` template, plus inputs. |
+| Scenario / Eval | Structured test cases for a prompt stored under its `eval/` folder.                                |
+| Plugin          | An extension that can add commands / behaviors to the core CLI.                                    |
+| Workspace       | The root directory where projects, prompts, and artifacts live.                                    |
 
 ---
 
@@ -133,6 +133,35 @@ Each plugin can:
 
 ## 🏁 Quick Start
 
+### Using the Scaffolding Command (Recommended)
+
+The easiest way to create projects and prompts is using the `scaffolding` command:
+
+```bash
+# List available templates
+prompting_workbench scaffolding --list-templates
+
+# Create a new project
+prompting_workbench scaffolding --create-project my_first_project
+
+# Create a prompt in your project
+prompting_workbench scaffolding --project my_first_project --create-prompt "01-01 greeting_prompt"
+
+# Create a prompt with custom provider and model
+prompting_workbench scaffolding --project my_first_project --create-prompt "01-02 summarizer" --provider anthropic --model claude-3-opus
+```
+
+The scaffolding command automatically creates all necessary files and directories:
+
+- Template files (`llm_system.jinja2`, `user_prompt.jinja2`)
+- Input directories (`prompt_inputs/default/`, `system_inputs/default/`)
+- Evaluation setup (`eval/` with test config and scenarios)
+- Configuration files (`.config/meta_info.json`, `execution_plan.json`)
+
+### Manual Setup
+
+Alternatively, you can create the structure manually:
+
 Initialize your workspace structure:
 
 ```bash
@@ -153,8 +182,65 @@ $EDITOR wrkbnch_projects_space/my_first_project/prompts/01-01--greeting_prompt/u
 Run the CLI targeting your project:
 
 ```bash
-prompting_workbench --project my_first_project
+prompting_workbench --project my_first_project runner
 ```
+
+---
+
+## 📋 Available Commands
+
+### Scaffolding
+
+Generate project and prompt structures:
+
+```bash
+# List available templates
+prompting_workbench scaffolding --list-templates
+
+# Create a new project
+prompting_workbench scaffolding --create-project PROJECT_NAME [--description "Description"]
+
+# Create a new prompt
+prompting_workbench scaffolding --create-prompt "PROMPT_ID PROMPT_NAME" [OPTIONS]
+
+# Options for --create-prompt:
+#   --project, -p       Project name
+#   --system, -s        Custom system prompt
+#   --user, -u          Custom user prompt
+#   --provider          LLM provider (openai, anthropic, ollama)
+#   --model, -m         LLM model name
+```
+
+See the [Scaffolding Plugin README](packages/prompting-workbench/src/prompting_workbench/plugins/scaffolding/README.md) for detailed documentation.
+
+### Configuration
+
+Manage project and prompt configurations:
+
+```bash
+# Show current configuration
+prompting_workbench config --view
+```
+
+### Runner
+
+Execute prompts against LLM providers:
+
+```bash
+# Run all prompts in a project
+prompting_workbench --project my_project runner
+
+# Run specific prompts
+prompting_workbench --project my_project -P 01-01--greeting_prompt runner
+
+# Dry-run mode
+prompting_workbench --project my_project --dry-run runner
+```
+
+---
+
+## 💻 CLI Usage
+
 List project help (after plugin load):
 
 ```bash
